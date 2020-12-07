@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://IC.gd" type="Script" id=1]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+margin_right = 300.0
+margin_bottom = 150.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 12.0
+margin_bottom = 150.0
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+margin_right = 12.0
+margin_bottom = 20.0
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+margin_top = 24.0
+margin_right = 12.0
+margin_bottom = 44.0
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+margin_top = 48.0
+margin_right = 12.0
+margin_bottom = 68.0
+
+[node name="Button4" type="Button" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 12.0
+margin_bottom = 92.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 16.0
+margin_right = 166.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 0 )
+
+[node name="Label" type="Label" parent="ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = -32.5
+margin_right = 14.0
+margin_bottom = 32.5
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "TEST"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+margin_left = 170.0
+margin_right = 182.0
+margin_bottom = 150.0
+
+[node name="Button" type="Button" parent="VBoxContainer2"]
+margin_right = 12.0
+margin_bottom = 20.0
+
+[node name="Button2" type="Button" parent="VBoxContainer2"]
+margin_top = 24.0
+margin_right = 12.0
+margin_bottom = 44.0
+
+[node name="Button3" type="Button" parent="VBoxContainer2"]
+margin_top = 48.0
+margin_right = 12.0
+margin_bottom = 68.0
+
+[node name="Button4" type="Button" parent="VBoxContainer2"]
+margin_top = 72.0
+margin_right = 12.0
+margin_bottom = 92.0

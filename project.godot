@@ -1,0 +1,29 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "HBoxContainer",
+"class": "IC",
+"language": "GDScript",
+"path": "res://IC.gd"
+} ]
+_global_script_class_icons={
+"IC": ""
+}
+
+[application]
+
+config/name="Logic Gates"
+run/main_scene="res://SandBox.tscn"
+config/icon="res://icon.png"
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

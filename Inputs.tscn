@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Inputs.gd" type="Script" id=1]
+
+[node name="PanelContainer" type="PanelContainer"]
+margin_top = 96.0
+margin_right = 40.0
+margin_bottom = 110.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 33.0
+margin_bottom = 99.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputButton1" type="Button" parent="VBoxContainer"]
+margin_right = 26.0
+margin_bottom = 20.0
+
+[node name="InputButton2" type="Button" parent="VBoxContainer"]
+margin_top = 24.0
+margin_right = 26.0
+margin_bottom = 44.0
+
+[node name="InputButton3" type="Button" parent="VBoxContainer"]
+margin_top = 48.0
+margin_right = 26.0
+margin_bottom = 68.0
+
+[node name="InputButton4" type="Button" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 26.0
+margin_bottom = 92.0
+[connection signal="button_up" from="VBoxContainer/InputButton1" to="." method="_on_InputButton1_button_up"]
+[connection signal="button_up" from="VBoxContainer/InputButton2" to="." method="_on_InputButton2_button_up"]
+[connection signal="button_up" from="VBoxContainer/InputButton3" to="." method="_on_InputButton3_button_up"]
+[connection signal="button_up" from="VBoxContainer/InputButton4" to="." method="_on_InputButton4_button_up"]

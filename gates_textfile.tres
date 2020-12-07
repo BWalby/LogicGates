@@ -1,0 +1,15 @@
+{
+	name: "NOT",
+	inputs: 1,
+	output: 1,
+	truths: {
+		row: {
+			input: "1",
+			output: "0"
+		},
+		row: {
+			input: "0",
+			output: "1"
+		},		
+	}
+}
