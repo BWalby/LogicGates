@@ -2,43 +2,66 @@
 
 [ext_resource path="res://Inputs.gd" type="Script" id=1]
 
-[node name="PanelContainer" type="PanelContainer"]
-margin_top = 96.0
-margin_right = 40.0
-margin_bottom = 110.0
+[node name="GraphNode" type="GraphNode"]
+margin_right = 32.0
+margin_bottom = 30.0
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color( 1, 1, 1, 1 )
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color( 1, 1, 1, 1 )
+slot/1/right_enabled = true
+slot/1/right_type = 0
+slot/1/right_color = Color( 1, 1, 1, 1 )
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color( 1, 1, 1, 1 )
+slot/2/right_enabled = true
+slot/2/right_type = 0
+slot/2/right_color = Color( 1, 1, 1, 1 )
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color( 1, 1, 1, 1 )
+slot/3/right_enabled = true
+slot/3/right_type = 0
+slot/3/right_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 33.0
-margin_bottom = 99.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="InputButton1" type="Button" parent="VBoxContainer"]
-margin_right = 26.0
-margin_bottom = 20.0
-
-[node name="InputButton2" type="Button" parent="VBoxContainer"]
+[node name="InputAButton" type="Button" parent="."]
+margin_left = 16.0
 margin_top = 24.0
-margin_right = 26.0
+margin_right = 38.0
 margin_bottom = 44.0
+text = "A"
 
-[node name="InputButton3" type="Button" parent="VBoxContainer"]
-margin_top = 48.0
-margin_right = 26.0
-margin_bottom = 68.0
+[node name="InputBButton" type="Button" parent="."]
+margin_left = 16.0
+margin_top = 45.0
+margin_right = 38.0
+margin_bottom = 65.0
+text = "B"
 
-[node name="InputButton4" type="Button" parent="VBoxContainer"]
-margin_top = 72.0
-margin_right = 26.0
-margin_bottom = 92.0
-[connection signal="button_up" from="VBoxContainer/InputButton1" to="." method="_on_InputButton1_button_up"]
-[connection signal="button_up" from="VBoxContainer/InputButton2" to="." method="_on_InputButton2_button_up"]
-[connection signal="button_up" from="VBoxContainer/InputButton3" to="." method="_on_InputButton3_button_up"]
-[connection signal="button_up" from="VBoxContainer/InputButton4" to="." method="_on_InputButton4_button_up"]
+[node name="InputCButton" type="Button" parent="."]
+margin_left = 16.0
+margin_top = 66.0
+margin_right = 38.0
+margin_bottom = 86.0
+text = "C"
+
+[node name="InputDButton" type="Button" parent="."]
+margin_left = 16.0
+margin_top = 87.0
+margin_right = 38.0
+margin_bottom = 107.0
+text = "D"
+[connection signal="pressed" from="InputAButton" to="." method="_on_InputAButton_pressed"]
+[connection signal="pressed" from="InputBButton" to="." method="_on_InputBButton_pressed"]
+[connection signal="pressed" from="InputCButton" to="." method="_on_InputCButton_pressed"]
+[connection signal="pressed" from="InputDButton" to="." method="_on_InputDButton_pressed"]

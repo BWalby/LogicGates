@@ -9,13 +9,19 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "HBoxContainer",
-"class": "IC",
+"base": "Object",
+"class": "CharMapper",
 "language": "GDScript",
-"path": "res://IC.gd"
+"path": "res://CharMapper.gd"
+}, {
+"base": "GraphNode",
+"class": "CustomGraphNode",
+"language": "GDScript",
+"path": "res://CustomGraphNode.gd"
 } ]
 _global_script_class_icons={
-"IC": ""
+"CharMapper": "",
+"CustomGraphNode": ""
 }
 
 [application]

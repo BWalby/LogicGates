@@ -1,17 +1,19 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Inputs.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Toolbox.gd" type="Script" id=2]
 [ext_resource path="res://SandBox.gd" type="Script" id=3]
 
-[node name="ColorRect" type="ColorRect"]
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.533333, 0.262745, 0.262745, 1 )
+
+[node name="GraphEdit" type="GraphEdit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.05945
-margin_right = 1.05945
-color = Color( 0.0980392, 0.537255, 0.827451, 1 )
+custom_styles/bg = SubResource( 1 )
 script = ExtResource( 3 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -19,9 +21,10 @@ __meta__ = {
 anchor_top = 0.85
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_right = -2.0
-margin_bottom = -2.0
+margin_left = 5.0
+margin_top = 1.05945
+margin_right = -15.0
+margin_bottom = -15.0
 rect_min_size = Vector2( 0, 50 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -30,50 +33,51 @@ __meta__ = {
 
 [node name="AndButton" type="Button" parent="Toolbox"]
 margin_right = 50.0
-margin_bottom = 88.0
+margin_bottom = 73.0
 rect_min_size = Vector2( 50, 0 )
 text = "AND"
 
 [node name="OrButton" type="Button" parent="Toolbox"]
 margin_left = 54.0
 margin_right = 104.0
-margin_bottom = 88.0
+margin_bottom = 73.0
 rect_min_size = Vector2( 50, 0 )
 text = "OR"
 
-[node name="PanelContainer" parent="." instance=ExtResource( 1 )]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 2.0
-margin_top = -53.0
-margin_bottom = 53.0
-
 [node name="AddGateHBox" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 2.0
+margin_left = 230.0
+margin_top = 3.05945
+margin_right = -15.0
 margin_bottom = 50.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GateNameTextBox" type="TextEdit" parent="AddGateHBox"]
-margin_right = 500.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 500, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="GateNameLineEdit" type="LineEdit" parent="AddGateHBox"]
+margin_right = 725.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
 
 [node name="AddGateButton" type="Button" parent="AddGateHBox"]
-margin_left = 504.0
-margin_right = 554.0
-margin_bottom = 48.0
+margin_left = 729.0
+margin_right = 779.0
+margin_bottom = 46.0
 rect_min_size = Vector2( 50, 0 )
 disabled = true
 text = "Add"
+
+[node name="GraphNode" parent="." instance=ExtResource( 1 )]
+margin_left = 10.0
+margin_top = 250.0
+margin_right = 83.0
+margin_bottom = 363.0
+mouse_filter = 1
+title = "Inputs"
+offset = Vector2( 10, 250 )
+[connection signal="connection_request" from="." to="." method="_on_GraphEdit_connection_request"]
 [connection signal="button_up" from="Toolbox/AndButton" to="Toolbox" method="_on_AndButton_button_up"]
 [connection signal="button_up" from="Toolbox/OrButton" to="Toolbox" method="_on_OrButton_button_up"]
-[connection signal="text_changed" from="AddGateHBox/GateNameTextBox" to="." method="_on_GateNameTextBox_text_changed"]
+[connection signal="text_changed" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_changed"]
+[connection signal="text_entered" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_entered"]
 [connection signal="button_up" from="AddGateHBox/AddGateButton" to="." method="_on_AddGateButton_button_up"]

@@ -1,28 +1,41 @@
-extends PanelContainer
+extends GraphNode
 
-# Called when the node enters the scene tree for the first time.
+const INIT_COLOUR: Color = Color.white
+const ON_COLOUR: Color = Color.green
+const OFF_COLOUR: Color = Color.red
+
+var states = [false, false, false, false]
+
 func _ready():
-	pass # Replace with function body.
+	init_slots()
+	
+func init_slots():
+	for i in range(states.size()):
+		var state = states[i]
+		setup_output_slot(i, map_state_to_colour(state))
 
+func toggle_state(index: int) -> bool:
+	states[index] = !states[index]
+	return states[index]
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func setup_output_slot(index: int, colour: Color):
+	set_slot(index, false, -1, Color.pink, true, 0, colour)
 
-func process_input_press(index: int):
-	print("input" + str(index))
+func set_output_state(index: int):
+	var state = toggle_state(index)
+	setup_output_slot(index, map_state_to_colour(state))
+	
+func map_state_to_colour(state) -> Color:
+	return ON_COLOUR if state else OFF_COLOUR
 
+func _on_InputAButton_pressed():
+	set_output_state(0)
 
-func _on_InputButton1_button_up():
-	process_input_press(0)
+func _on_InputBButton_pressed():
+	set_output_state(1)
 
-func _on_InputButton2_button_up():
-	process_input_press(1)
+func _on_InputCButton_pressed():
+	set_output_state(2)
 
-
-func _on_InputButton3_button_up():
-	process_input_press(2)
-
-
-func _on_InputButton4_button_up():
-	process_input_press(3)
+func _on_InputDButton_pressed():
+	set_output_state(3)
