@@ -21,7 +21,8 @@ func process_gate_name_submitted() -> void:
 
 func create_gate_node(name: String, input_count: int, output_count: int) -> void:
 	var node: CustomGraphNode = GRAPH_NODE.instance()
-	node.setup(name, input_count, output_count)
+	node.title = name
+	node.setup(input_count, output_count)
 	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	add_child(node)
 	move_gate_to_mouse(node)
@@ -73,7 +74,7 @@ func load_persisted_nodes() -> void:
 		var filename = node_data[TreeHelper.filename_key]
 		var new_node = load(filename).instance()
 		TreeHelper.populate_node_from_data(node_data, new_node)
-#		new_node.setup(name, input_count, output_count)
+		new_node.setup_from_data(node_data)
 		add_child(new_node)
 		new_node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 

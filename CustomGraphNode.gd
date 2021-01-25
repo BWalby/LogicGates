@@ -7,8 +7,7 @@ signal graph_node_close(node)
 var input_count: int
 var output_count: int
 
-func setup(title_text: String, inputs: int, outputs: int):
-	title = title_text
+func setup(inputs: int, outputs: int):
 	self.input_count = inputs
 	self.output_count = outputs
 	setup_slots(inputs, outputs)
@@ -38,13 +37,19 @@ func _on_GraphNode_close_request():
 
 func generate_data_dict() -> Dictionary:
 	return {
-		#may not need these 2:
 		"filename" : get_filename(),
 		"parent" : get_parent().get_path(),
-		
-		"input_count": input_count,
-		"output_count": output_count,
+
 		"title": title,
 		TreeHelper.offset_x_key: self.offset.x,
-		TreeHelper.offset_y_key: self.offset.y
+		TreeHelper.offset_y_key: self.offset.y,
+		
+		TreeHelper.metadata_key: {
+			"input_count": input_count,
+			"output_count": output_count	
+		}		
 	}
+
+func setup_from_data(data: Dictionary) -> void:
+	var metadata = data[TreeHelper.metadata_key]
+	setup(metadata["input_count"], metadata["output_count"])

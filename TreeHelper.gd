@@ -10,7 +10,8 @@ const offset_x_key = "offset_x"
 const offset_y_key = "offset_y"
 const filename_key = "filename"
 const parent_key = "parent"
-const manually_populate_properties = [filename_key, parent_key, pos_x_key, pos_y_key, offset_x_key, offset_y_key]
+const metadata_key = "metadata"
+const manually_populate_properties = [filename_key, parent_key, metadata_key, pos_x_key, pos_y_key, offset_x_key, offset_y_key]
 
 func _ready():
 	pass # Replace with function body.
