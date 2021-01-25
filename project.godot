@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "CustomGraphNode",
 "language": "GDScript",
 "path": "res://CustomGraphNode.gd"
+}, {
+"base": "Object",
+"class": "Persistence",
+"language": "GDScript",
+"path": "res://Persistence.gd"
 } ]
 _global_script_class_icons={
 "CharMapper": "",
-"CustomGraphNode": ""
+"CustomGraphNode": "",
+"Persistence": ""
 }
 
 [application]
@@ -29,6 +35,10 @@ _global_script_class_icons={
 config/name="Logic Gates"
 run/main_scene="res://SandBox.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+TreeHelper="*res://TreeHelper.gd"
 
 [rendering]
 

@@ -25,10 +25,8 @@ func create_gate_button(name) -> Button:
 	gate_button.connect("button_up", self, "process_gate_button_press", [name])
 	return gate_button
 
-
 func _on_AndButton_button_up():
 	emit_signal("gate_clicked", "AND", 2, 1)
-	
 
 func _on_OrButton_button_up():
 	emit_signal("gate_clicked", "OR", 2, 1)

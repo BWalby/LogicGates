@@ -35,3 +35,16 @@ func setup_labels(inputs: int) -> void:
 
 func _on_GraphNode_close_request():
 	emit_signal("graph_node_close", self)
+
+func generate_data_dict() -> Dictionary:
+	return {
+		#may not need these 2:
+		"filename" : get_filename(),
+		"parent" : get_parent().get_path(),
+		
+		"input_count": input_count,
+		"output_count": output_count,
+		"title": title,
+		TreeHelper.offset_x_key: self.offset.x,
+		TreeHelper.offset_y_key: self.offset.y
+	}

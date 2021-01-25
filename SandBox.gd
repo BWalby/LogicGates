@@ -2,6 +2,7 @@ extends GraphEdit
 
 const GRAPH_NODE = preload("res://GraphNode.tscn")
 const GRAPH_NODE_CLOSE_EVENT = "graph_node_close"
+const SAVE_FILE_PATH = "user://data.save"
 
 onready var add_gate_button = $AddGateHBox/AddGateButton
 onready var gate_name_line_edit = $AddGateHBox/GateNameLineEdit
@@ -10,6 +11,7 @@ onready var toolbox = $"Toolbox"
 func _ready():
 	toolbox.connect("gate_clicked", self, "create_gate_node")
 	OS.low_processor_usage_mode = true
+	load_persisted_nodes()
 	
 func process_gate_name_submitted() -> void:
 	var input = gate_name_line_edit.text.to_upper()
@@ -23,7 +25,6 @@ func create_gate_node(name: String, input_count: int, output_count: int) -> void
 	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	add_child(node)
 	move_gate_to_mouse(node)
-
 
 func move_gate_to_mouse(node: GraphNode) -> void:
 	var node_size_halved = node.rect_size / 2.0
@@ -64,3 +65,24 @@ func _on_GraphEdit_connection_request(from, from_slot, to, to_slot) -> void:
 func on_graph_node_closed(node: GraphNode):
 	node.disconnect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	remove_child(node)
+
+func load_persisted_nodes() -> void:
+	var data = Persistence.load(SAVE_FILE_PATH)
+	
+	for node_data in data:
+		var filename = node_data[TreeHelper.filename_key]
+		var new_node = load(filename).instance()
+		TreeHelper.populate_node_from_data(node_data, new_node)
+#		new_node.setup(name, input_count, output_count)
+		add_child(new_node)
+		new_node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+
+func save_persisted_nodes() -> void:
+	Persistence.save(SAVE_FILE_PATH)
+
+func _on_GraphEdit_tree_exiting():
+	# child nodes seem to already be leaving the tree in this event
+	print("ello")
+
+func _on_SaveButton_pressed():
+	save_persisted_nodes()

@@ -75,9 +75,18 @@ margin_bottom = 363.0
 mouse_filter = 1
 title = "Inputs"
 offset = Vector2( 10, 250 )
+
+[node name="SaveButton" type="Button" parent="."]
+margin_left = 341.989
+margin_top = 70.795
+margin_right = 353.989
+margin_bottom = 90.795
+text = "save"
 [connection signal="connection_request" from="." to="." method="_on_GraphEdit_connection_request"]
+[connection signal="tree_exiting" from="." to="." method="_on_GraphEdit_tree_exiting"]
 [connection signal="button_up" from="Toolbox/AndButton" to="Toolbox" method="_on_AndButton_button_up"]
 [connection signal="button_up" from="Toolbox/OrButton" to="Toolbox" method="_on_OrButton_button_up"]
 [connection signal="text_changed" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_changed"]
 [connection signal="text_entered" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_entered"]
 [connection signal="button_up" from="AddGateHBox/AddGateButton" to="." method="_on_AddGateButton_button_up"]
+[connection signal="pressed" from="SaveButton" to="." method="_on_SaveButton_pressed"]
