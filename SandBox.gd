@@ -1,6 +1,6 @@
 extends GraphEdit
 
-const GRAPH_NODE = preload("res://GraphNode.tscn")
+const GRAPH_NODE = preload("res://Scenes/GraphNode.tscn")
 const GRAPH_NODE_CLOSE_EVENT = "graph_node_close"
 const SAVE_FILE_PATH = "user://data.save"
 
@@ -71,12 +71,13 @@ func load_persisted_nodes() -> void:
 	var data = Persistence.load(SAVE_FILE_PATH)
 	
 	for node_data in data:
-		var filename = node_data[TreeHelper.filename_key]
-		var new_node = load(filename).instance()
-		TreeHelper.populate_node_from_data(node_data, new_node)
-		new_node.setup_from_data(node_data)
-		add_child(new_node)
-		new_node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+		var node = TreeHelper.instantiate_node_from_filename_value(node_data)
+		
+		assert(TreeHelper.has_load_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
+		node.call(TreeHelper.load_from_data_dict_method_name, node_data)
+		
+		add_child(node)
+		node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 
 func save_persisted_nodes() -> void:
 	Persistence.save(SAVE_FILE_PATH)

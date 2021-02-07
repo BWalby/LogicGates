@@ -4,17 +4,8 @@ const persisted_tag := "Persisted"
 const ic_definition_tag := "ICDefinition"
 const ic_tag := "IC"
 const generate_data_dict_method_name := "generate_data_dict"
-const pos_x_key = "pos_x"
-const pos_y_key = "pos_y"
-const offset_x_key = "offset_x"
-const offset_y_key = "offset_y"
-const filename_key = "filename"
-const parent_key = "parent"
-const metadata_key = "metadata"
-const manually_populate_properties = [filename_key, parent_key, metadata_key, pos_x_key, pos_y_key, offset_x_key, offset_y_key]
+const load_from_data_dict_method_name := "load_from_data_dict"
 
-func _ready():
-	pass # Replace with function body.
 
 func remove_nodes_by_group_tag(group_tag: String) -> void:
 	var nodes = get_tree().get_nodes_in_group(group_tag)
@@ -42,15 +33,12 @@ func list_nodes(root_node: Node = null) -> void:
 		
 		list_nodes(child)
 
-func populate_node_from_data(data: Dictionary, node: Node) -> void:
-	if data.has_all([offset_x_key, offset_y_key]):
-		node.offset = Vector2(data[offset_x_key], data[offset_y_key])
+func instantiate_node_from_filename_value(data_dict: Dictionary) -> Node:
+	var filename = data_dict[DataKeys.filename_key]
+	return load(filename).instance()
+
+func has_load_method(node: Node) -> bool:
+	return node.has_method(self.load_from_data_dict_method_name)
 	
-	if data.has_all([pos_x_key, pos_y_key]):
-		node.position = Vector2(data[pos_x_key], data[pos_y_key])
-	
-	for key in data.keys():
-		if manually_populate_properties.has(key):
-			continue
-		
-		node.set(key, data[key])
+func has_generate_data_dict_method(node: Node) -> bool:
+	return node.has_method(self.generate_data_dict_method_name)

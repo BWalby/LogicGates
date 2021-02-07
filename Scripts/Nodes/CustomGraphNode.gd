@@ -6,6 +6,7 @@ signal graph_node_close(node)
 
 var input_count: int
 var output_count: int
+var load_strategy = CustomGraphNodeLoadStrategy.new()
 
 func setup(inputs: int, outputs: int):
 	self.input_count = inputs
@@ -19,7 +20,6 @@ func setup_slots(count: int, outputs: int) -> void:
 		setup_slot(i, is_output)
 	
 func setup_slot(index: int, is_output: bool) -> void:
-#	var is_root_node := true;
 	var input_colour := Color.white
 	var input_type = 0
 	var output_colour = Color.white
@@ -37,19 +37,19 @@ func _on_GraphNode_close_request():
 
 func generate_data_dict() -> Dictionary:
 	return {
-		"filename" : get_filename(),
-		"parent" : get_parent().get_path(),
+		DataKeys.filename_key : get_filename(),
+		DataKeys.parent_key : get_parent().get_path(),
 
-		"title": title,
-		TreeHelper.offset_x_key: self.offset.x,
-		TreeHelper.offset_y_key: self.offset.y,
+		DataKeys.title_key: title,
+		DataKeys.offset_x_key: self.offset.x,
+		DataKeys.offset_y_key: self.offset.y,
 		
-		TreeHelper.metadata_key: {
+		DataKeys.metadata_key: {
 			"input_count": input_count,
-			"output_count": output_count	
+			"output_count": output_count
 		}		
 	}
 
-func setup_from_data(data: Dictionary) -> void:
-	var metadata = data[TreeHelper.metadata_key]
-	setup(metadata["input_count"], metadata["output_count"])
+func load_from_data_dict(data: Dictionary) -> void:
+	load_strategy.load(data, self)
+	load_strategy.load_meta_data(data, self)

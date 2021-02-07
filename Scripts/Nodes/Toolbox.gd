@@ -5,13 +5,6 @@ const MIN_GATE_BUTTON_WIDTH := 50
 
 signal gate_clicked (name, input_count, output_count)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-func load_gates() -> void:
-	pass
-	
 func add_gate(name: String) -> void:
 	var button = create_gate_button(name)
 	print("adding")

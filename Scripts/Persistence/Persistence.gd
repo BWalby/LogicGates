@@ -11,15 +11,6 @@ class_name Persistence
 # sample code for saving nodes by group and a line in the file each:
 #	https://docs.godotengine.org/en/3.2/tutorials/io/saving_games.html#saving-and-reading-data
 
-static func get_group_node_data_dicts(group_tag: String) -> Array:
-	var nodes = TreeHelper.get_nodes_in_group(group_tag)
-	var dictionaries = []
-	for node in nodes:
-		if node.is_in_group(TreeHelper.persisted_tag):
-			dictionaries.append(generate_data_dict(node))
-	
-	return dictionaries
-
 static func save(file_path: String) -> void:
 	var data_file = File.new()
 	data_file.open(file_path, File.WRITE)
@@ -36,8 +27,33 @@ static func save(file_path: String) -> void:
 	
 	data_file.close()
 
+static func get_group_node_data_dicts(group_tag: String) -> Array:
+	var nodes = TreeHelper.get_nodes_in_group(group_tag)
+	var dictionaries = []
+	for node in nodes:
+		if node.is_in_group(TreeHelper.persisted_tag):
+			var node_data = generate_data_dict(node)
+			dictionaries.append(node_data)
+	
+	return dictionaries
+
 static func generate_data_dict(node: Node) -> Dictionary:
+	assert(TreeHelper.has_generate_data_dict_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
 	return node.call(TreeHelper.generate_data_dict_method_name)
+
+# example of a line in data.save:
+#{
+#	"filename":"res://Scenes/GraphNode.tscn",
+#	"metadata":
+#	{
+#		"input_count":2,
+#		"output_count":1
+#	},
+#	"offset_x":420,
+#	"offset_y":280,
+#	"parent":"/root/GraphEdit",
+#	"title":"AND"
+#}
 
 static func load(file_path: String) -> Array:
 	var loaded_data = []
