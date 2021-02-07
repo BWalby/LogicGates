@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Inputs.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Nodes/Toolbox.gd" type="Script" id=2]
+[ext_resource path="res://SandBox.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.533333, 0.262745, 0.262745, 1 )
+
+[node name="GraphEdit" type="GraphEdit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/bg = SubResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Toolbox" type="HBoxContainer" parent="."]
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 1.05945
+margin_right = -15.0
+margin_bottom = -15.0
+rect_min_size = Vector2( 0, 50 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AndButton" type="Button" parent="Toolbox"]
+margin_right = 50.0
+margin_bottom = 73.0
+rect_min_size = Vector2( 50, 0 )
+text = "AND"
+
+[node name="OrButton" type="Button" parent="Toolbox"]
+margin_left = 54.0
+margin_right = 104.0
+margin_bottom = 73.0
+rect_min_size = Vector2( 50, 0 )
+text = "OR"
+
+[node name="AddGateHBox" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_left = 230.0
+margin_top = 3.05945
+margin_right = -15.0
+margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GateNameLineEdit" type="LineEdit" parent="AddGateHBox"]
+margin_right = 725.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+
+[node name="AddGateButton" type="Button" parent="AddGateHBox"]
+margin_left = 729.0
+margin_right = 779.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 50, 0 )
+disabled = true
+text = "Add"
+
+[node name="GraphNode" parent="." instance=ExtResource( 1 )]
+margin_left = 10.0
+margin_top = 250.0
+margin_right = 83.0
+margin_bottom = 363.0
+mouse_filter = 1
+title = "Inputs"
+offset = Vector2( 10, 250 )
+
+[node name="SaveButton" type="Button" parent="."]
+margin_left = 341.989
+margin_top = 70.795
+margin_right = 353.989
+margin_bottom = 90.795
+text = "save"
+[connection signal="connection_request" from="." to="." method="_on_GraphEdit_connection_request"]
+[connection signal="tree_exiting" from="." to="." method="_on_GraphEdit_tree_exiting"]
+[connection signal="button_up" from="Toolbox/AndButton" to="Toolbox" method="_on_AndButton_button_up"]
+[connection signal="button_up" from="Toolbox/OrButton" to="Toolbox" method="_on_OrButton_button_up"]
+[connection signal="text_changed" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_changed"]
+[connection signal="text_entered" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_entered"]
+[connection signal="button_up" from="AddGateHBox/AddGateButton" to="." method="_on_AddGateButton_button_up"]
+[connection signal="pressed" from="SaveButton" to="." method="_on_SaveButton_pressed"]

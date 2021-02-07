@@ -1,0 +1,63 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Object",
+"class": "CharMapper",
+"language": "GDScript",
+"path": "res://Scripts/PrimitivesUtilities/CharMapper.gd"
+}, {
+"base": "GraphNode",
+"class": "CustomGraphNode",
+"language": "GDScript",
+"path": "res://Scripts/Nodes/CustomGraphNode.gd"
+}, {
+"base": "LoadStrategy",
+"class": "CustomGraphNodeLoadStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/CustomGraphNodeLoadStrategy.gd"
+}, {
+"base": "Reference",
+"class": "DataKeys",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/DataKeys.gd"
+}, {
+"base": "Object",
+"class": "LoadStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/LoadStrategy.gd"
+}, {
+"base": "Object",
+"class": "Persistence",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/Persistence.gd"
+} ]
+_global_script_class_icons={
+"CharMapper": "",
+"CustomGraphNode": "",
+"CustomGraphNodeLoadStrategy": "",
+"DataKeys": "",
+"LoadStrategy": "",
+"Persistence": ""
+}
+
+[application]
+
+config/name="Logic Gates"
+run/main_scene="res://Scenes/SandBox.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+TreeHelper="*res://Scripts/TreeUtilities/TreeHelper.gd"
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
