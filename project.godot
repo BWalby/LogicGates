@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Object",
 "class": "CharMapper",
 "language": "GDScript",
-"path": "res://Scripts/PrimitivesUtilities/CharMapper.gd"
+"path": "res://Scripts/PrimitiveTypeUtilities/CharMapper.gd"
 }, {
 "base": "GraphNode",
 "class": "CustomGraphNode",
@@ -30,6 +30,16 @@ _global_script_classes=[ {
 "path": "res://Scripts/Persistence/DataKeys.gd"
 }, {
 "base": "Object",
+"class": "Enums",
+"language": "GDScript",
+"path": "res://Scripts/Enums.gd"
+}, {
+"base": "Object",
+"class": "ExecutionSteps",
+"language": "GDScript",
+"path": "res://Scripts/Gates/ExecutionSteps.gd"
+}, {
+"base": "Object",
 "class": "LoadStrategy",
 "language": "GDScript",
 "path": "res://Scripts/Persistence/LoadStrategy.gd"
@@ -38,14 +48,28 @@ _global_script_classes=[ {
 "class": "Persistence",
 "language": "GDScript",
 "path": "res://Scripts/Persistence/Persistence.gd"
+}, {
+"base": "Object",
+"class": "Primitives",
+"language": "GDScript",
+"path": "res://Scripts/Gates/Primitives.gd"
+}, {
+"base": "Object",
+"class": "Runner",
+"language": "GDScript",
+"path": "res://Scripts/Gates/Runner.gd"
 } ]
 _global_script_class_icons={
 "CharMapper": "",
 "CustomGraphNode": "",
 "CustomGraphNodeLoadStrategy": "",
 "DataKeys": "",
+"Enums": "",
+"ExecutionSteps": "",
 "LoadStrategy": "",
-"Persistence": ""
+"Persistence": "",
+"Primitives": "",
+"Runner": ""
 }
 
 [application]
