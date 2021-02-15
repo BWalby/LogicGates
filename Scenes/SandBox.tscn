@@ -83,6 +83,7 @@ margin_right = 353.989
 margin_bottom = 90.795
 text = "save"
 [connection signal="connection_request" from="." to="." method="_on_GraphEdit_connection_request"]
+[connection signal="disconnection_request" from="." to="." method="_on_GraphEdit_disconnection_request"]
 [connection signal="tree_exiting" from="." to="." method="_on_GraphEdit_tree_exiting"]
 [connection signal="button_up" from="Toolbox/AndButton" to="Toolbox" method="_on_AndButton_button_up"]
 [connection signal="button_up" from="Toolbox/OrButton" to="Toolbox" method="_on_OrButton_button_up"]
