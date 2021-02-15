@@ -1,5 +1,4 @@
 extends Object
-
 class_name Persistence
 
 # files are stored under the resource path res://, are commonly read-only

@@ -1,5 +1,4 @@
 extends GraphNode
-
 class_name CustomGraphNode
 
 signal graph_node_close(node)

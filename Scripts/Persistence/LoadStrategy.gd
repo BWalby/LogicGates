@@ -1,5 +1,4 @@
 extends Object
-
 class_name LoadStrategy
 
 const manually_populate_properties = [DataKeys.filename_key, 

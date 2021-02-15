@@ -9,6 +9,7 @@ onready var gate_name_line_edit = $AddGateHBox/GateNameLineEdit
 onready var toolbox = $"Toolbox"
 
 func _ready():
+	self.right_disconnects = true
 	toolbox.connect("gate_clicked", self, "create_gate_node")
 	OS.low_processor_usage_mode = true
 	load_persisted_nodes()
@@ -88,3 +89,8 @@ func _on_GraphEdit_tree_exiting():
 
 func _on_SaveButton_pressed():
 	save_persisted_nodes()
+
+
+func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
+#	self.right_disconnects 
+	self.disconnect_node(from, from_slot, to, to_slot)

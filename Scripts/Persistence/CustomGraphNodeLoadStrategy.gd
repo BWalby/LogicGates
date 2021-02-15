@@ -1,5 +1,4 @@
 extends LoadStrategy
-
 class_name CustomGraphNodeLoadStrategy
 
 func load_meta_data(data: Dictionary, graph_node: Node) -> void:

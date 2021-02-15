@@ -1,5 +1,4 @@
 extends Object
-
 class_name CharMapper
 
 const characters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
