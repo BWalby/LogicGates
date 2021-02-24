@@ -28,10 +28,11 @@ func all_inputs_are_processed() -> bool:
 
 func process() -> Array:
 	assert(all_inputs_are_processed(), "Inputs have not been processed")
-	assert(!self.process_step, "Process step cannot be unintialised")
+#todo: reinstate this when we can properly check
+	assert(self.process_step != null, "Process step cannot be unintialised")
 	
 	var inputs = collate_input_results()
 	
 	#todo: test if this works with call_funcv, instead of call_func
-	self.result = self.process_step.call_funcv(inputs)
+	self.result = self.process_step.call_func(inputs)
 	return self.result
