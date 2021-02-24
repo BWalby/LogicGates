@@ -9,10 +9,25 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Gate",
+"class": "AndGate",
+"language": "GDScript",
+"path": "res://Scripts/Gates/AndGate.gd"
+}, {
 "base": "Object",
 "class": "CharMapper",
 "language": "GDScript",
 "path": "res://Scripts/PrimitiveTypeUtilities/CharMapper.gd"
+}, {
+"base": "Component",
+"class": "CombinatorComponent",
+"language": "GDScript",
+"path": "res://Scripts/Components/CombinatorComponent.gd"
+}, {
+"base": "Object",
+"class": "Component",
+"language": "GDScript",
+"path": "res://Scripts/Components/Component.gd"
 }, {
 "base": "GraphNode",
 "class": "CustomGraphNode",
@@ -34,15 +49,40 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Enums.gd"
 }, {
-"base": "Object",
-"class": "ExecutionSteps",
+"base": "Component",
+"class": "FixedInputComponent",
 "language": "GDScript",
-"path": "res://Scripts/Gates/ExecutionSteps.gd"
+"path": "res://Scripts/Components/FixedInputComponent.gd"
+}, {
+"base": "Object",
+"class": "Gate",
+"language": "GDScript",
+"path": "res://Scripts/Gates/Gate.gd"
+}, {
+"base": "Object",
+"class": "GraphBuilder",
+"language": "GDScript",
+"path": "res://Scripts/Runner/GraphBuilder.gd"
 }, {
 "base": "Object",
 "class": "LoadStrategy",
 "language": "GDScript",
 "path": "res://Scripts/Persistence/LoadStrategy.gd"
+}, {
+"base": "Gate",
+"class": "NotGate",
+"language": "GDScript",
+"path": "res://Scripts/Gates/NotGate.gd"
+}, {
+"base": "Gate",
+"class": "OrGate",
+"language": "GDScript",
+"path": "res://Scripts/Gates/OrGate.gd"
+}, {
+"base": "Gate",
+"class": "PassThroughGate",
+"language": "GDScript",
+"path": "res://Scripts/Gates/PassThroughGate.gd"
 }, {
 "base": "Object",
 "class": "Persistence",
@@ -50,25 +90,27 @@ _global_script_classes=[ {
 "path": "res://Scripts/Persistence/Persistence.gd"
 }, {
 "base": "Object",
-"class": "Primitives",
-"language": "GDScript",
-"path": "res://Scripts/Gates/Primitives.gd"
-}, {
-"base": "Object",
 "class": "Runner",
 "language": "GDScript",
-"path": "res://Scripts/Gates/Runner.gd"
+"path": "res://Scripts/Runner/Runner.gd"
 } ]
 _global_script_class_icons={
+"AndGate": "",
 "CharMapper": "",
+"CombinatorComponent": "",
+"Component": "",
 "CustomGraphNode": "",
 "CustomGraphNodeLoadStrategy": "",
 "DataKeys": "",
 "Enums": "",
-"ExecutionSteps": "",
+"FixedInputComponent": "",
+"Gate": "",
+"GraphBuilder": "",
 "LoadStrategy": "",
+"NotGate": "",
+"OrGate": "",
+"PassThroughGate": "",
 "Persistence": "",
-"Primitives": "",
 "Runner": ""
 }
 
@@ -81,6 +123,10 @@ config/icon="res://icon.png"
 [autoload]
 
 TreeHelper="*res://Scripts/TreeUtilities/TreeHelper.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "gut" )
 
 [rendering]
 
