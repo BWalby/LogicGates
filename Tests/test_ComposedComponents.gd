@@ -38,7 +38,6 @@ func test_nonlinear_hierarchy(params=use_parameters(nonlinear_hierarchy_data)):
 	assert_typeof(and_result, TYPE_ARRAY)
 	assert_eq(and_result, and_expected)
 
-
 var nand_data = [
 	[false, false, true],
 	[true, false, true],
