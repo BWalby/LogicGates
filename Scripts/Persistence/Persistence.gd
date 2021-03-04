@@ -59,7 +59,7 @@ static func load(file_path: String) -> Array:
 	var data_file = File.new()
 	
 	if not data_file.file_exists(file_path):
-		#TODO: user feedback
+		#TODO: operation feedback to user
 		return loaded_data
 		
 	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
