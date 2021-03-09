@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Components/Component.gd"
 }, {
+"base": "Object",
+"class": "ComponentSorter",
+"language": "GDScript",
+"path": "res://Scripts/Runner/ComponentSorter.gd"
+}, {
 "base": "GraphNode",
 "class": "CustomGraphNode",
 "language": "GDScript",
@@ -99,6 +104,7 @@ _global_script_class_icons={
 "CharMapper": "",
 "CombinatorComponent": "",
 "Component": "",
+"ComponentSorter": "",
 "CustomGraphNode": "",
 "CustomGraphNodeLoadStrategy": "",
 "DataKeys": "",

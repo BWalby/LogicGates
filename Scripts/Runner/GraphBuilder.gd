@@ -1,31 +1,50 @@
 extends Object
 class_name GraphBuilder
 
-static func get_ordered_graph_internal(origin: Component, graph: Array, input_steps: Array) -> void:
+const pair_index_key := "index"
+const pair_component_key := "component"
+
+static func get_ordered_graph_internal(origin: Component, graph: Array, graph_input_steps: Array) -> void:
+	# must be a root node, so we can assume it is a fixed input component
 	if !origin.input_steps:
-		input_steps.append(origin)
+		graph_input_steps.append(origin)
 		return
 	
 	if !graph.has(origin):
 		graph.append(origin)
 	
-	var origin_input_steps = origin.input_steps as Array
 	
-	#todo: implement custom descending sort (sort_custom()) on input_steps length
-	#	var orderedInputs = origin.InputSteps.OrderByDescending(i => i.InputSteps?.Length ?? 0).ToArray();
-	var ordered_inputs = origin_input_steps.sort()
+	# input steps ordered descending by most children (input_steps)
+	# when two are equal, the index should then be used (highest first, as this gets inverted in final stages)
+	var ordered_inputs = []
+	for i in range(origin.input_steps.size()):
+		ordered_inputs.append(create_index_component_pair(origin.input_steps[i], i))
+		
+	ordered_inputs.sort_custom(ComponentSorter, "sort_by_child_count_descending")
 	
-	for step in ordered_inputs:
-		get_ordered_graph_internal(step, graph, input_steps)
+	for input in ordered_inputs:
+		var component = input[pair_component_key]
+		get_ordered_graph_internal(component, graph, graph_input_steps)
 
+static func create_index_component_pair(component: Component, index: int) -> Dictionary:
+	return {
+		pair_index_key: index,
+		pair_component_key: component
+	}
 
 static func get_ordered_graph(origin: Component) -> Array:
-	var input_steps = []
+	# these are the fixed inputs at the start of the graph
+	var graph_input_steps = []
 	var graph = []
-	get_ordered_graph_internal(origin, graph, input_steps)
+	get_ordered_graph_internal(origin, graph, graph_input_steps)
 	
-# todo: implement both functions for array
-#	graph.reverse()
-#	graph.insert_range(0, input_steps)
+	# equivalent of array reverse
+	graph.invert()
+	
+	#todo: make distinct before inserting
+	
+	# equivalent of insert range at 0
+	for step in graph_input_steps:
+		graph.push_front(step)
 	
 	return graph
