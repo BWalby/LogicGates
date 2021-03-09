@@ -4,7 +4,7 @@ class_name FixedInputComponent
 var fixed_input_value: bool
 
 # empty array, as arrays can't be null
-func _init(fixed_value: bool).([], null):
+func _init(fixed_value: bool, name: String = "").([], null, name):
 	self.fixed_input_value = fixed_value
 	
 func process() -> Array:

@@ -7,10 +7,12 @@ class_name Component
 var process_step: FuncRef
 var input_steps: Array
 var result := []
+var name: String
 
-func _init(inputs: Array, process_callback: FuncRef):
+func _init(inputs: Array, process_callback: FuncRef, name: String = ""):
 	self.input_steps = inputs
-	self.process_step = process_callback 
+	self.process_step = process_callback
+	self.name = name
 
 func collate_input_results() -> Array:
 	var results = []
