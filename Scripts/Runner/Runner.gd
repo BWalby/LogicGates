@@ -3,18 +3,15 @@ class_name Runner
 
 var result: Array
 
-func run() -> Array:
+func run(final_step: Component) -> Array:
 	# todo: convert to GDScript
 #      if (!(finalStep is OutputCombinatorStep) && !(finalStep is HierarchicalStep) && !(finalStep is FixedInputStep))
 #        throw new ArgumentException($"Invalid {nameof(finalStep)} parameter");
-#
-#      var orderedGraph = GraphBuilder.GetOrderedGraph(finalStep);
-#
-#      foreach (var step in orderedGraph)
-#        step.Process();
-#
-#      Result = finalStep.Result;
-#      return Result;	
+	
+	var ordered_graph = GraphBuilder.get_ordered_graph(final_step)
 
-	#todo: remove placeholder return
-	return []
+	for step in ordered_graph:
+		step.process()
+	
+	result = final_step.result
+	return result
