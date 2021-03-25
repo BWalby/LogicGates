@@ -1,8 +1,9 @@
 extends "res://addons/gut/test.gd"
 
-const gate_predicate_func: String = "predicate"
+func assert_array_size(result: Array, expected_size: int):
+	assert_typeof(result, TYPE_ARRAY)
+	assert_eq(result.size(), expected_size)
 
-	
 func test_ordered_graph_2_inputs_to_combinator():
 	# A--\
 	#	  ---Combinator
@@ -13,8 +14,7 @@ func test_ordered_graph_2_inputs_to_combinator():
 	var final_combinator = CombinatorComponent.new([input_a, input_b])
 	
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-	assert_typeof(graph, TYPE_ARRAY)
-	assert_eq(graph.size(), 3)
+	assert_array_size(graph, 3)
 	
 	var input_a_index = graph.find(input_a)
 	var input_b_index = graph.find(input_b)
@@ -37,8 +37,7 @@ func test_ordered_graph_2_ands_a_passed_to_second_then_combinator():
 	var final_combinator = CombinatorComponent.new([second_and, input_b], "combinator")
 
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-	assert_typeof(graph, TYPE_ARRAY)
-	assert_eq(graph.size(), 5)
+	assert_array_size(graph, 5)
 
 	var input_a_index = graph.find(input_a)
 	var input_b_index = graph.find(input_b)
@@ -66,8 +65,7 @@ func test_ordered_graph_2_ands_a_passed_to_second_b_passed_combinator():
 	var final_combinator = CombinatorComponent.new([second_and, input_b])
 
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-	assert_typeof(graph, TYPE_ARRAY)
-	assert_eq(graph.size(), 5)
+	assert_array_size(graph, 5)
 
 	var input_a_index = graph.find(input_a)
 	var input_b_index = graph.find(input_b)
@@ -98,8 +96,7 @@ func test_ordered_graph_2_buffered_inputs_to_and_1_buffered_input_to_combinator_
 	var final_combinator = CombinatorComponent.new([first_and, buffer_c])
 
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-	assert_typeof(graph, TYPE_ARRAY)
-	assert_eq(graph.size(), 8)
+	assert_array_size(graph, 8)
 
 	var input_a_index = graph.find(input_a)
 	var input_b_index = graph.find(input_b)
@@ -121,3 +118,29 @@ func test_ordered_graph_2_buffered_inputs_to_and_1_buffered_input_to_combinator_
 	
 	assert_eq(first_and_index, 6)
 	assert_eq(combinator_index, 7)
+
+func test_ordered_graph_xor_ic():
+	var input_a = FixedInputComponent.new(true)
+	var input_b = FixedInputComponent.new(true)
+	var input_components = [input_a, input_b]
+	
+	var and_component = ComponentHelper.create_and_component(input_components)
+	var not_component = ComponentHelper.create_not_component([and_component])
+	
+	var or_component = ComponentHelper.create_or_component(input_components)
+
+	# NAND and OR, converge onto a single AND
+	var final_and_component = ComponentHelper.create_and_component([not_component, or_component])
+	
+	var graph = GraphBuilder.get_ordered_graph(final_and_component)
+	assert_array_size(graph, 6)
+
+	var input_a_index = graph.find(input_a)
+	var input_b_index = graph.find(input_b)
+	var and_index = graph.find(and_component)
+	var not_index = graph.find(not_component)
+	var or_index = graph.find(or_component)
+	var final_and_index = graph.find(final_and_component)
+	
+	assert_eq(final_and_index, 7)
+	# TODO: fix this, graph is incorrect because of converging point?

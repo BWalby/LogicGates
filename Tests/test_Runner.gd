@@ -158,6 +158,14 @@ func test_constructed_nor_ic(params=use_parameters(nor_data)):
 	assert_all_steps_processed([input_a, input_b, or_component, not_component])
 	assert_eq(result[0], expected_result)
 
+
+
+
+
+
+
+
+
 var xor_data = [
 	[false, false, false],
 	[true, false, true],
@@ -174,7 +182,7 @@ func test_constructed_xor_ic(params=use_parameters(xor_data)):
 	var input_b = FixedInputComponent.new(input_b_value)
 	var input_components = [input_a, input_b]
 	
-	var nand_component = ComponentHelper.create_and_component(input_components)
+	var nand_component = ComponentHelper.create_nand_component(input_components)
 	var or_component = ComponentHelper.create_or_component(input_components)
 	
 	# NAND and OR, converge onto a single AND
@@ -185,21 +193,6 @@ func test_constructed_xor_ic(params=use_parameters(xor_data)):
 #	assert_array_size(result, 1)
 #	assert_all_steps_processed([input_a, input_b, nand_component, or_component, final_and_component])
 #	assert_eq(result[0], expected_result)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
