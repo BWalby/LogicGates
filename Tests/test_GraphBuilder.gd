@@ -2,9 +2,6 @@ extends "res://addons/gut/test.gd"
 
 const gate_predicate_func: String = "predicate"
 
-func create_and_component(inputs: Array, name: String = "") -> Component:
-	var and_gate = AndGate.new()
-	return Component.new(inputs, funcref(and_gate, gate_predicate_func), name)
 	
 func test_ordered_graph_2_inputs_to_combinator():
 	# A--\
@@ -35,8 +32,8 @@ func test_ordered_graph_2_ands_a_passed_to_second_then_combinator():
 
 	var input_a = FixedInputComponent.new(true, "a")
 	var input_b = FixedInputComponent.new(true, "b")
-	var first_and = create_and_component([input_a, input_b], "and1")
-	var second_and = create_and_component([first_and, input_b], "and2")
+	var first_and = ComponentHelper.create_and_component([input_a, input_b], "and1")
+	var second_and = ComponentHelper.create_and_component([first_and, input_b], "and2")
 	var final_combinator = CombinatorComponent.new([second_and, input_b], "combinator")
 
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -64,8 +61,8 @@ func test_ordered_graph_2_ands_a_passed_to_second_b_passed_combinator():
 
 	var input_a = FixedInputComponent.new(true)
 	var input_b = FixedInputComponent.new(true)
-	var first_and = create_and_component([input_a, input_b])
-	var second_and = create_and_component([first_and, input_a])
+	var first_and = ComponentHelper.create_and_component([input_a, input_b])
+	var second_and = ComponentHelper.create_and_component([first_and, input_a])
 	var final_combinator = CombinatorComponent.new([second_and, input_b])
 
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -97,7 +94,7 @@ func test_ordered_graph_2_buffered_inputs_to_and_1_buffered_input_to_combinator_
 	var buffer_a = CombinatorComponent.new([input_a])
 	var buffer_b = CombinatorComponent.new([input_b])
 	var buffer_c = CombinatorComponent.new([input_c])
-	var first_and = create_and_component([buffer_a, buffer_b])
+	var first_and = ComponentHelper.create_and_component([buffer_a, buffer_b])
 	var final_combinator = CombinatorComponent.new([first_and, buffer_c])
 
 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
