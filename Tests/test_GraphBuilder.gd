@@ -120,17 +120,17 @@ func test_ordered_graph_2_buffered_inputs_to_and_1_buffered_input_to_combinator_
 	assert_eq(combinator_index, 7)
 
 func test_ordered_graph_xor_ic():
-	var input_a = FixedInputComponent.new(true)
-	var input_b = FixedInputComponent.new(true)
+	var input_a = FixedInputComponent.new(true, "a")
+	var input_b = FixedInputComponent.new(true, "b")
 	var input_components = [input_a, input_b]
 	
-	var and_component = ComponentHelper.create_and_component(input_components)
-	var not_component = ComponentHelper.create_not_component([and_component])
+	var and_component = ComponentHelper.create_and_component(input_components, "and1")
+	var not_component = ComponentHelper.create_not_component([and_component], "not")
 	
-	var or_component = ComponentHelper.create_or_component(input_components)
+	var or_component = ComponentHelper.create_or_component(input_components, "or")
 
 	# NAND and OR, converge onto a single AND
-	var final_and_component = ComponentHelper.create_and_component([not_component, or_component])
+	var final_and_component = ComponentHelper.create_and_component([not_component, or_component], "and2")
 	
 	var graph = GraphBuilder.get_ordered_graph(final_and_component)
 	assert_array_size(graph, 6)
@@ -142,5 +142,9 @@ func test_ordered_graph_xor_ic():
 	var or_index = graph.find(or_component)
 	var final_and_index = graph.find(final_and_component)
 	
-	assert_eq(final_and_index, 7)
-	# TODO: fix this, graph is incorrect because of converging point?
+	assert_eq(input_a_index, 0)
+	assert_eq(input_b_index, 1)
+	assert_eq(and_index, 2)
+	assert_eq(not_index, 3)
+	assert_eq(or_index, 4)
+	assert_eq(final_and_index, 5)
