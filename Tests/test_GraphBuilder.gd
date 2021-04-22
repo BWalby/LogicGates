@@ -1,79 +1,80 @@
 extends "res://addons/gut/test.gd"
 
-# func assert_array_size(result: Array, expected_size: int) -> void:
-# 	assert_typeof(result, TYPE_ARRAY)
-# 	assert_eq(result.size(), expected_size)
+var factory := ComponentFactory.new(GatePredicateHelper.new())
 
-# func assert_component_at_index(graph: Array, component: Component, expected_index: int) -> void:
-# 	var index = graph.find(component)
-# 	assert_eq(index, expected_index)
+func assert_array_size(result: Array, expected_size: int) -> void:
+	assert_typeof(result, TYPE_ARRAY)
+	assert_eq(result.size(), expected_size)
 
-# func test_ordered_graph_2_inputs_to_combinator():
-# 	# A--\
-# 	#	  ---Combinator
-# 	# B--/
-	
-# 	var input_a = FixedInputComponent.new(true, "a")
-# 	var input_b = FixedInputComponent.new(true, "b")
-# 	var final_combinator = CombinatorComponent.new([input_a, input_b], "combinator")
-	
-# 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-# 	assert_array_size(graph, 3)
-	
-# 	#todo: why is this the wrong way round in the results and not as expected below, a=0, b=1
-# 	assert_component_at_index(graph, input_a, 0)
-# 	assert_component_at_index(graph, input_b, 1)
-	
-# 	assert_component_at_index(graph, final_combinator, 2)
-	
-# func test_ordered_graph_2_inputs_2_ands_then_combinator():
-# 	# A-----AND--\
-# 	#    |		 Combinator
-# 	# B-----AND--/
-	
-# 	var input_a = FixedInputComponent.new(true, "a")
-# 	var input_b = FixedInputComponent.new(true, "b")
-# 	var inputs = [input_a, input_b]
-# 	var and_1 = ComponentHelper.create_and_component(inputs, "and1")
-# 	var and_2 = ComponentHelper.create_and_component(inputs, "and2")
-# 	var final_combinator = CombinatorComponent.new([and_1, and_2], "combinator")
-	
-# 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-# 	assert_array_size(graph, 5)
-	
-# 	assert_component_at_index(graph, input_a, 0)
-# 	assert_component_at_index(graph, input_b, 1)
-# 	assert_component_at_index(graph, and_1, 2)
-# 	assert_component_at_index(graph, and_2, 3)
-# 	assert_component_at_index(graph, final_combinator, 4)
+func assert_component_at_index(graph: Array, component: Component, expected_index: int) -> void:
+	var index = graph.find(component)
+	assert_eq(index, expected_index)
 
+# A--\
+#	  ---Combinator
+# B--/
+func test_ordered_graph_2_inputs_to_combinator():
+  var input_a = factory.create_input_component(true, "InputA")
+  var input_b = factory.create_input_component(true, "InputB")
+  var input_components = [input_a, input_b]
+  var final_combinator = factory.create_pass_through_component(input_components, "FinalPassThrough")
+	
+  var graph = GraphBuilder.get_ordered_graph(final_combinator)
+  assert_array_size(graph, 3)
+	
+	#todo: investigate - why is this the wrong way round in the results and not as expected below, a=0, b=1
+  assert_component_at_index(graph, input_a, 0)
+  assert_component_at_index(graph, input_b, 1)
+  assert_component_at_index(graph, final_combinator, 2)
+	
+# A-----AND--\
+#    |		 Combinator
+# B-----AND--/
+func test_ordered_graph_2_inputs_2_ands_then_combinator():
+  var input_a = factory.create_input_component(true, "InputA")
+  var input_b = factory.create_input_component(true, "InputB")
+  var input_components = [input_a, input_b]
+  var and_1 = factory.create_and_component(input_components, "And1")
+  var and_2 = factory.create_and_component(input_components, "And2")
+  var and_components = [and_1, and_2]
+  var final_combinator = factory.create_pass_through_component(and_components, "FinalPassThrough")
+
+  var graph = GraphBuilder.get_ordered_graph(final_combinator)
+  assert_array_size(graph, 5)
+
+  assert_component_at_index(graph, input_a, 0)
+  assert_component_at_index(graph, input_b, 1)
+  assert_component_at_index(graph, and_1, 2)
+  assert_component_at_index(graph, and_2, 3)
+  assert_component_at_index(graph, final_combinator, 4)
+
+# A--\
+#	  AND--\
+# B--/		|
+#			Combinator
+# C--NOT--/  
 # func test_ordered_graph_top_weighted_branch():
-# 	# A--\
-# 	#	  AND--\
-# 	# B--/		|
-# 	#			Combinator
-# 	# C--NOT--/
+#   var input_a = factory.create_input_component(true, "InputA")
+#   var input_b = factory.create_input_component(true, "InputB")
+#   var input_components = [input_a, input_b]
+#   var and_component = factory.create_and_component(input_components, "And")
 	
-# 	var input_a = FixedInputComponent.new(true, "a")
-# 	var input_b = FixedInputComponent.new(true, "b")
-# 	var and_component = ComponentHelper.create_and_component([input_a, input_b], "and")
-	
-# 	var input_c = FixedInputComponent.new(true, "c")
-# 	var not_component = ComponentHelper.create_not_component([input_c], "not")
-	
-# 	var final_combinator = CombinatorComponent.new([and_component, and_component], "combinator")
-	
-# 	var graph = GraphBuilder.get_ordered_graph(final_combinator)
-# 	assert_array_size(graph, 6)
-	
-# 	# TODO: which way round is correct for inputs (added retrospectively)
-# 	# either this (top_weighted) or bottom_weighted
-# 	assert_component_at_index(graph, input_a, 0)
-# 	assert_component_at_index(graph, input_b, 1)
-# 	assert_component_at_index(graph, input_c, 2)
-# 	assert_component_at_index(graph, not_component, 3)
-# 	assert_component_at_index(graph, and_component, 4)
-# 	assert_component_at_index(graph, final_combinator, 5)
+#   var input_c = factory.create_input_component(true, "InputC")
+#   var not_component = factory.create_not_component(input_c, "Not")
+
+#   var final_combinator = factory.create_pass_through_component([and_component, and_component], "FinalCombinator")
+
+#   var graph = GraphBuilder.get_ordered_graph(final_combinator)
+#   assert_array_size(graph, 6)
+
+#   # TODO: which way round is correct for inputs (added retrospectively)
+#   # either this (top_weighted) or bottom_weighted
+#   assert_component_at_index(graph, input_a, 0)
+#   assert_component_at_index(graph, input_b, 1)
+#   assert_component_at_index(graph, input_c, 2)
+#   assert_component_at_index(graph, not_component, 3)
+#   assert_component_at_index(graph, and_component, 4)
+#   assert_component_at_index(graph, final_combinator, 5)
 
 # func test_ordered_graph_bottom_weighted_branch():
 # 	# A--NOT--\

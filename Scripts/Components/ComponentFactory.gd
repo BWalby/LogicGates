@@ -15,8 +15,8 @@ func create_component(component_type_def: ComponentTypeDefinition, inputs: Array
 func create_and_component(inputs: Array, identifier: String = "") -> Component:
 	return create_component(and_type_def, inputs, identifier)
 
-func create_not_component(inputs: Array, identifier: String = "") -> Component:
-	return create_component(not_type_def, inputs, identifier)
+func create_not_component(input: Component, identifier: String = "") -> Component:
+	return create_component(not_type_def, [input], identifier)
 		
 func create_input_component(value: bool, identifier: String = "") -> Component:
 	return InputComponent.new(value, identifier)
