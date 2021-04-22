@@ -7,12 +7,32 @@ const SAVE_FILE_PATH = "user://data.save"
 onready var add_gate_button = $AddGateHBox/AddGateButton
 onready var gate_name_line_edit = $AddGateHBox/GateNameLineEdit
 onready var toolbox = $"Toolbox"
+onready var component_controller := ComponentController.new()
 
 func _ready():
 	self.right_disconnects = true
 	toolbox.connect("gate_clicked", self, "create_gate_node")
 	OS.low_processor_usage_mode = true
-	load_persisted_nodes()
+	hook_controller()
+	load_persisted_data()
+
+func hook_controller() -> void:
+	connect("custom_definition_added", component_controller, "on_custom_definition_added")
+	connect("custom_definition_removed", component_controller, "on_custom_definition_removed")
+	connect("component_added", component_controller, "on_component_added")
+	connect("component_removed", component_controller, "on_component_removed")
+
+func on_custom_definition_added(type_definition: ComponentTypeDefinition) -> void:
+	pass
+
+func on_custom_definition_removed(type_definition: ComponentTypeDefinition) -> void:
+	pass
+	
+func on_component_added(component: Component) -> void:
+	create_node(component)
+	
+func on_component_removed(component: Component) -> void:
+	pass	
 	
 func process_gate_name_submitted() -> void:
 	var input = gate_name_line_edit.text.to_upper()
@@ -68,10 +88,17 @@ func on_graph_node_closed(node: GraphNode):
 	node.disconnect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	remove_child(node)
 
-func load_persisted_nodes() -> void:
-	var data = Persistence.load(SAVE_FILE_PATH)
+func load_persisted_data() -> void:
+	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
+	TreeHelper.remove_persisted_nodes()
 	
-	for node_data in data:
+	var dictionaries = Persistence.load_from_file(SAVE_FILE_PATH)
+	# todo: split dictionaries to defs and components
+	component_controller.load_definitions(dictionaries)
+	component_controller.load_components(dictionaries)
+
+
+func create_node(component: Component) -> void:
 		var node = TreeHelper.instantiate_node_from_filename_value(node_data)
 		
 		assert(TreeHelper.has_load_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
@@ -89,7 +116,6 @@ func _on_GraphEdit_tree_exiting():
 
 func _on_SaveButton_pressed():
 	save_persisted_nodes()
-
 
 func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 #	self.right_disconnects 

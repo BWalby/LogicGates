@@ -3,15 +3,20 @@ class_name CustomGraphNode
 
 signal graph_node_close(node)
 
-var input_count: int
-var output_count: int
+var component: Component
 var load_strategy = CustomGraphNodeLoadStrategy.new()
 
-func setup(inputs: int, outputs: int):
-	self.input_count = inputs
-	self.output_count = outputs
-	setup_slots(inputs, outputs)
-	setup_labels(inputs)
+func _init(component: Component):
+	self.component = component
+	var type_def = component.type_definition
+	setup_slots(type_def.input_count, type_def.output_count)
+	setup_labels(type_def.input_count)
+	setup_title(component.uid)
+	setup_position(component.position)
+	connect("position_changed", component, "on_component_position_changed")
+
+func setup_position(position: Vector2) -> void:
+	self.offset = position
 
 func setup_slots(count: int, outputs: int) -> void:
 	for i in count:
@@ -31,24 +36,15 @@ func setup_labels(inputs: int) -> void:
 		label.text = CharMapper.int_to_char(i)
 		add_child(label)
 
+func setup_title(identifier: String) -> void:
+	self.title = "TODO"
+
 func _on_GraphNode_close_request():
 	emit_signal("graph_node_close", self)
 
-func generate_data_dict() -> Dictionary:
-	return {
-		DataKeys.filename_key : get_filename(),
-		DataKeys.parent_key : get_parent().get_path(),
+func on_component_position_changed(position: Vector2) -> void:
+	self.offset = position
 
-		DataKeys.title_key: title,
-		DataKeys.offset_x_key: self.offset.x,
-		DataKeys.offset_y_key: self.offset.y,
-		
-		DataKeys.metadata_key: {
-			"input_count": input_count,
-			"output_count": output_count
-		}		
-	}
-
-func load_from_data_dict(data: Dictionary) -> void:
-	load_strategy.load(data, self)
-	load_strategy.load_meta_data(data, self)
+func on_GraphNode_offset_changed():
+	# todo: set position directly or call the setget stated method?
+	self.component.position = self.offset

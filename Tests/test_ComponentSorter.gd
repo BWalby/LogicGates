@@ -1,12 +1,14 @@
 extends "res://addons/gut/test.gd"
 
+var factory = ComponentFactory.new(GatePredicateHelper.new())
+
 func create_component(input_count: int) -> Component:
 	var inputs = []
 	
 	for i in input_count:
-		inputs.append(FixedInputComponent.new(true))
+		inputs.append(factory.create_pass_through_component([true], "PassThrough%s" % i))
 	
-	return Component.new(inputs, null)
+	return factory.create_pass_through_component(inputs, "FinalPassThrough")
 
 func test_ComponentSorter_input_counts_distinct():
 	var inputs_1 = create_component(1)

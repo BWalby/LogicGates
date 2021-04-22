@@ -1,8 +1,7 @@
 extends Object
 class_name LoadStrategy
 
-const manually_populate_properties = [DataKeys.filename_key, 
-	DataKeys.parent_key, DataKeys.metadata_key, DataKeys.pos_x_key, 
+const manually_populate_properties = [DataKeys.parent_key, DataKeys.metadata_key, DataKeys.pos_x_key, 
 	DataKeys.pos_y_key, DataKeys.offset_x_key, DataKeys.offset_y_key]
 
 func load(data: Dictionary, node: Node) -> void:

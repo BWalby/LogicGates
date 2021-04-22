@@ -30,14 +30,29 @@ _global_script_classes=[ {
 "path": "res://Scripts/Components/Component.gd"
 }, {
 "base": "Object",
-"class": "ComponentHelper",
+"class": "ComponentController",
 "language": "GDScript",
-"path": "res://Scripts/Components/ComponentHelper.gd"
+"path": "res://Scripts/Components/ComponentController.gd"
+}, {
+"base": "Object",
+"class": "ComponentFactory",
+"language": "GDScript",
+"path": "res://Scripts/Components/ComponentFactory.gd"
 }, {
 "base": "Object",
 "class": "ComponentSorter",
 "language": "GDScript",
 "path": "res://Scripts/Runner/ComponentSorter.gd"
+}, {
+"base": "Object",
+"class": "ComponentTypeDefinition",
+"language": "GDScript",
+"path": "res://Scripts/Components/ComponentTypeDefinition.gd"
+}, {
+"base": "Object",
+"class": "ComponentTypeDefinitionDataKeys",
+"language": "GDScript",
+"path": "res://Scripts/Components/ComponentTypeDefinitionDataKeys.gd"
 }, {
 "base": "GraphNode",
 "class": "CustomGraphNode",
@@ -59,25 +74,35 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Enums.gd"
 }, {
-"base": "Component",
-"class": "FixedInputComponent",
-"language": "GDScript",
-"path": "res://Scripts/Components/FixedInputComponent.gd"
-}, {
 "base": "Object",
 "class": "Gate",
 "language": "GDScript",
 "path": "res://Scripts/Gates/Gate.gd"
 }, {
 "base": "Object",
+"class": "GatePredicateHelper",
+"language": "GDScript",
+"path": "res://Scripts/Gates/GatePredicateHelper.gd"
+}, {
+"base": "Object",
 "class": "GraphBuilder",
 "language": "GDScript",
 "path": "res://Scripts/Runner/GraphBuilder.gd"
+}, {
+"base": "Component",
+"class": "InputComponent",
+"language": "GDScript",
+"path": "res://Scripts/Components/InputComponent.gd"
 }, {
 "base": "Object",
 "class": "LoadStrategy",
 "language": "GDScript",
 "path": "res://Scripts/Persistence/LoadStrategy.gd"
+}, {
+"base": "Reference",
+"class": "MockHelper",
+"language": "GDScript",
+"path": "res://Tests/MockHelper.gd"
 }, {
 "base": "Gate",
 "class": "NotGate",
@@ -109,16 +134,21 @@ _global_script_class_icons={
 "CharMapper": "",
 "CombinatorComponent": "",
 "Component": "",
-"ComponentHelper": "",
+"ComponentController": "",
+"ComponentFactory": "",
 "ComponentSorter": "",
+"ComponentTypeDefinition": "",
+"ComponentTypeDefinitionDataKeys": "",
 "CustomGraphNode": "",
 "CustomGraphNodeLoadStrategy": "",
 "DataKeys": "",
 "Enums": "",
-"FixedInputComponent": "",
 "Gate": "",
+"GatePredicateHelper": "",
 "GraphBuilder": "",
+"InputComponent": "",
 "LoadStrategy": "",
+"MockHelper": "",
 "NotGate": "",
 "OrGate": "",
 "PassThroughGate": "",
@@ -129,7 +159,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Logic Gates"
-run/main_scene="res://Scenes/SandBox.tscn"
+run/main_scene="res://Tests/UnitTestScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]

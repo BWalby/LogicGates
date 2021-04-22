@@ -3,16 +3,25 @@ class_name Component
 
 # can be setup via:
 #	funcref(my_node, "my_function")
-#	note: this lives in the utilities global @GDScript 	
+#	note: this lives in the utilities global @GDScript
 var process_step: FuncRef
 var input_steps: Array
 var result := []
-var name: String
+var uid: String
+var type_definition: ComponentTypeDefinition
+var position: Vector2 = Vector2.ZERO setget set_position
 
-func _init(inputs: Array, process_callback: FuncRef, name: String = ""):
+signal position_changed(position)
+
+func _init(component_type_definition: ComponentTypeDefinition, process_delegate: FuncRef,  inputs: Array, identifier: String = ""):
 	self.input_steps = inputs
-	self.process_step = process_callback
-	self.name = name
+	self.process_step = process_delegate
+	self.uid = identifier
+	self.type_definition = component_type_definition
+
+func set_position(value):
+	position = value
+	emit_signal("position_changed", position)
 
 func collate_input_results() -> Array:
 	var results = []

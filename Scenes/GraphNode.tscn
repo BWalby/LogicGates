@@ -14,3 +14,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="close_request" from="." to="." method="_on_GraphNode_close_request"]
+[connection signal="offset_changed" from="." to="." method="on_GraphNode_offset_changed"]
