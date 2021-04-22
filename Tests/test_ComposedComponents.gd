@@ -48,7 +48,7 @@ func test_nand_component(params=use_parameters(nand_data)):
 	var inputs_a_b = [input_a, input_b]
 
 	var and_step = factory.create_and_component(inputs_a_b, "And")
-	var not_step = factory.create_not_component([and_step], "Not")
+	var not_step = factory.create_not_component(and_step, "Not")
 
 	input_a.process()
 	input_b.process()
