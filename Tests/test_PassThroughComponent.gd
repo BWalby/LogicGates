@@ -37,3 +37,26 @@ func test_pass_through_component_with_multiple_inputs(params=use_parameters(mult
 	assert_typeof(result, TYPE_ARRAY)
 	assert_eq(result, params)
 	
+
+var three_fixed_input_values = [
+	[false, false, false],
+	[true, false, false],
+	[false, true, false],
+	[false, false, true],
+	[true, true, true]
+]
+
+func test_multiple_input_components_to_pass_through(input_values=use_parameters(three_fixed_input_values)):
+	var input_a = factory.create_input_component(input_values[0], "InputA") as InputComponent
+	var input_b = factory.create_input_component(input_values[1], "InputB") as InputComponent
+	var input_c = factory.create_input_component(input_values[2], "InputC") as InputComponent
+	
+	var input_components = [input_a, input_b, input_c]
+	for c in input_components:
+		c.process()
+	
+	var pass_through = factory.create_pass_through_component(input_components, "PassThrough")
+	var result = pass_through.process()
+
+	assert_typeof(result, TYPE_ARRAY)
+	assert_eq(result, input_values)
