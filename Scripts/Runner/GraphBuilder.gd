@@ -22,6 +22,7 @@ static func get_ordered_graph_internal(origin: Component, graph: Array, graph_in
 		
 	ordered_inputs.sort_custom(ComponentSorter, "sort_by_child_count_descending")
 	
+	# recursive call means that this operates in a depth, not breadth fashion
 	for input in ordered_inputs:
 		var component = input[pair_component_key]
 		get_ordered_graph_internal(component, graph, graph_input_steps)

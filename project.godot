@@ -54,6 +54,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Components/ComponentTypeDefinitionDataKeys.gd"
 }, {
+"base": "Object",
+"class": "ComponentTypeDefinitionLoadStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/ComponentTypeDefinitionLoadStrategy.gd"
+}, {
+"base": "Object",
+"class": "ComponentTypeDefinitionSaveStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/ComponentTypeDefinitionSaveStrategy.gd"
+}, {
 "base": "GraphNode",
 "class": "CustomGraphNode",
 "language": "GDScript",
@@ -128,6 +138,11 @@ _global_script_classes=[ {
 "class": "Runner",
 "language": "GDScript",
 "path": "res://Scripts/Runner/Runner.gd"
+}, {
+"base": "Object",
+"class": "SaveStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/SaveStrategy.gd"
 } ]
 _global_script_class_icons={
 "AndGate": "",
@@ -139,6 +154,8 @@ _global_script_class_icons={
 "ComponentSorter": "",
 "ComponentTypeDefinition": "",
 "ComponentTypeDefinitionDataKeys": "",
+"ComponentTypeDefinitionLoadStrategy": "",
+"ComponentTypeDefinitionSaveStrategy": "",
 "CustomGraphNode": "",
 "CustomGraphNodeLoadStrategy": "",
 "DataKeys": "",
@@ -153,7 +170,8 @@ _global_script_class_icons={
 "OrGate": "",
 "PassThroughGate": "",
 "Persistence": "",
-"Runner": ""
+"Runner": "",
+"SaveStrategy": ""
 }
 
 [application]
@@ -164,6 +182,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Uid="*res://Scripts/PrimitiveTypeUtilities/Uid.gd"
 TreeHelper="*res://Scripts/TreeUtilities/TreeHelper.gd"
 
 [editor_plugins]

@@ -17,7 +17,8 @@ func test_component_and_gate_config(params=use_parameters(and_gate_config_inline
 	
 	var input_steps = [mock_a, mock_b]
 
-	var and_component = factory.create_and_component(input_steps, "And")
+	var and_component = factory.create_and_component("And")
+	and_component.input_steps = input_steps
 
 	var result = and_component.process()
 	var expected = [params[2]]

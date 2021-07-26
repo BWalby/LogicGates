@@ -11,7 +11,7 @@ func _init(component: Component):
 	var type_def = component.type_definition
 	setup_slots(type_def.input_count, type_def.output_count)
 	setup_labels(type_def.input_count)
-	setup_title(component.uid)
+	setup_title(component.id)
 	setup_position(component.position)
 	connect("position_changed", component, "on_component_position_changed")
 
@@ -37,7 +37,7 @@ func setup_labels(inputs: int) -> void:
 		add_child(label)
 
 func setup_title(identifier: String) -> void:
-	self.title = "TODO"
+	self.title = identifier
 
 func _on_GraphNode_close_request():
 	emit_signal("graph_node_close", self)

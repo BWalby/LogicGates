@@ -1,6 +1,6 @@
 extends GraphEdit
 
-const GRAPH_NODE = preload("res://Scenes/GraphNode.tscn")
+const GRAPH_NODE = preload("res://Scenes/CustomGraphNode.tscn")
 const GRAPH_NODE_CLOSE_EVENT = "graph_node_close"
 const SAVE_FILE_PATH = "user://data.save"
 
@@ -29,7 +29,7 @@ func on_custom_definition_removed(type_definition: ComponentTypeDefinition) -> v
 	pass
 	
 func on_component_added(component: Component) -> void:
-	create_node(component)
+	create_node_from_component(component)
 	
 func on_component_removed(component: Component) -> void:
 	pass	
@@ -41,11 +41,7 @@ func process_gate_name_submitted() -> void:
 	$Toolbox.add_gate(input)
 
 func create_gate_node(name: String, input_count: int, output_count: int) -> void:
-	var node: CustomGraphNode = GRAPH_NODE.instance()
-	node.title = name
-	node.setup(input_count, output_count)
-	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
-	add_child(node)
+	var node = create_node(name, input_count, output_count)
 	move_gate_to_mouse(node)
 
 func move_gate_to_mouse(node: GraphNode) -> void:
@@ -91,28 +87,29 @@ func on_graph_node_closed(node: GraphNode):
 func load_persisted_data() -> void:
 	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
 	TreeHelper.remove_persisted_nodes()
-	
-	var dictionaries = Persistence.load_from_file(SAVE_FILE_PATH)
-	# todo: split dictionaries to defs and components
-	component_controller.load_definitions(dictionaries)
-	component_controller.load_components(dictionaries)
+	component_controller.load(SAVE_FILE_PATH)
 
+func create_node_from_component(component: Component) -> void:
+	# TODO: asserts can be removed?
+	# assert(TreeHelper.has_load_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
+	# node.call(TreeHelper.load_from_data_dict_method_name, node_data)
+	var definition = component.type_definition
+	var node = create_node(component.id, definition.input_count, definition.output_count)
 
-func create_node(component: Component) -> void:
-		var node = TreeHelper.instantiate_node_from_filename_value(node_data)
-		
-		assert(TreeHelper.has_load_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
-		node.call(TreeHelper.load_from_data_dict_method_name, node_data)
-		
-		add_child(node)
-		node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+func create_node(id: String, input_count: int, output_count: int) -> CustomGraphNode:
+	var node: CustomGraphNode = GRAPH_NODE.instance()
+	node.title = id
+	node.setup(input_count, output_count)
+	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+	add_child(node)
+	return node
 
 func save_persisted_nodes() -> void:
-	Persistence.save(SAVE_FILE_PATH)
+	component_controller.save(SAVE_FILE_PATH)
 
 func _on_GraphEdit_tree_exiting():
 	# child nodes seem to already be leaving the tree in this event
-	print("ello")
+	print("_on_GraphEdit_tree_exiting")
 
 func _on_SaveButton_pressed():
 	save_persisted_nodes()

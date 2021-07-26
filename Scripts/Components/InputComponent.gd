@@ -6,10 +6,10 @@ const gate_predicate_func = "forward_input_value_to_results"
 var input_value: bool
 
 var process_delegate = funcref(self, gate_predicate_func)
-var component_type_definition = ComponentTypeDefinition.new(Enums.ComponentType.INPUT, "", Enums.GatePredicateType.UNEDEFINED, 1, 1)
+var component_type_definition = ComponentTypeDefinition.new(Enums.ComponentType.INPUT, Enums.GatePredicateType.UNEDEFINED, 1, 1)
 
 # empty array for array, as there are no input components, just an input value
-func _init(initial_value: bool, identifier: String = "").(component_type_definition, process_delegate, [], identifier):
+func _init(initial_value: bool, uid: int, identifier: String = "").(component_type_definition, process_delegate, uid, identifier):
   self.input_value = initial_value
 
 func update_input_value(new_value: bool) -> void:

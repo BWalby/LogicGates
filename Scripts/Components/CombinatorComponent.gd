@@ -1,5 +1,5 @@
-extends Component
 class_name CombinatorComponent
+extends Component
 
 func combine(inputs: Array) -> Array:
 	return inputs

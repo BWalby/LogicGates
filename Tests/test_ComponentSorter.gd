@@ -6,9 +6,13 @@ func create_component(input_count: int) -> Component:
 	var inputs = []
 	
 	for i in input_count:
-		inputs.append(factory.create_pass_through_component([true], "PassThrough%s" % i))
+		var child_pass_through = factory.create_pass_through_component(1, i, "PassThrough%s" % i)
+		child_pass_through.input_steps = [true]
+		inputs.append(child_pass_through)
 	
-	return factory.create_pass_through_component(inputs, "FinalPassThrough")
+	var pass_through = factory.create_pass_through_component(input_count, 100, "FinalPassThrough")
+	pass_through.input_steps = inputs
+	return pass_through
 
 func test_ComponentSorter_input_counts_distinct():
 	var inputs_1 = create_component(1)

@@ -11,7 +11,8 @@ func test_pass_through_component(params=use_parameters(theory_inline_data)):
 	var mocked_pass_through = MockHelper.mock_processed_pass_through([params[0]], "MockPassThrough")
 
 	var inputs = [mocked_pass_through]
-	var component = factory.create_pass_through_component(inputs, "ConcretePassThrough")
+	var component = factory.create_pass_through_component(1, 100, "ConcretePassThrough")
+	component.input_steps = inputs
 	var result = component.process()
 
 	var expected = [params[1]]
@@ -31,7 +32,8 @@ func test_pass_through_component_with_multiple_inputs(params=use_parameters(mult
 	var mocked_pass_through_c = MockHelper.mock_processed_pass_through([params[2]], "MockPassThroughC")
 
 	var inputs = [mocked_pass_through_a, mocked_pass_through_b, mocked_pass_through_c]
-	var component = factory.create_pass_through_component(inputs, "Concrete3InputPassThrough")
+	var component = factory.create_pass_through_component(3, 100, "Concrete3InputPassThrough")
+	component.input_steps = inputs
 	var result = component.process()
 
 	assert_typeof(result, TYPE_ARRAY)
@@ -55,7 +57,8 @@ func test_multiple_input_components_to_pass_through(input_values=use_parameters(
 	for c in input_components:
 		c.process()
 	
-	var pass_through = factory.create_pass_through_component(input_components, "PassThrough")
+	var pass_through = factory.create_pass_through_component(3, 100, "PassThrough")
+	pass_through.input_steps = input_components
 	var result = pass_through.process()
 
 	assert_typeof(result, TYPE_ARRAY)

@@ -1,11 +1,10 @@
 extends Object
 class_name LoadStrategy
 
-const manually_populate_properties = [DataKeys.parent_key, DataKeys.metadata_key, DataKeys.pos_x_key, 
-	DataKeys.pos_y_key, DataKeys.offset_x_key, DataKeys.offset_y_key]
+static func load(data: Dictionary, factory: ComponentFactory, type_definitions: Array) -> Component:
+	
+	return factory.create_component()
 
-func load(data: Dictionary, node: Node) -> void:
-	populate_node_from_data(data, node)
 
 func populate_node_from_data(data: Dictionary, node: Node) -> void:
 	if data.has_all([DataKeys.offset_x_key, DataKeys.offset_y_key]):

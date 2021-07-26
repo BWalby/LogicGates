@@ -19,8 +19,10 @@ func test_nonlinear_hierarchy(params=use_parameters(nonlinear_hierarchy_data)):
 	var input_a = factory.create_input_component(params[0], "A")
 	var input_b = factory.create_input_component(params[1], "B")
 	var inputs_a_b = [input_a, input_b]
-	var and_step = factory.create_and_component(inputs_a_b, "And")
-	var combinator = factory.create_pass_through_component(inputs_a_b, "Combinator")
+	var and_step = factory.create_and_component("And")
+	and_step.input_steps = inputs_a_b
+	var combinator = factory.create_pass_through_component(2, 100, "Combinator")
+	combinator.input_steps = inputs_a_b
 	
 	input_a.process()
 	input_b.process()
@@ -47,8 +49,10 @@ func test_nand_component(params=use_parameters(nand_data)):
 	var input_b = factory.create_input_component(params[1], "B")
 	var inputs_a_b = [input_a, input_b]
 
-	var and_step = factory.create_and_component(inputs_a_b, "And")
-	var not_step = factory.create_not_component(and_step, "Not")
+	var and_step = factory.create_and_component("And")
+	and_step.input_steps = inputs_a_b
+	var not_step = factory.create_not_component("Not")
+	not_step.input_steps = [and_step]
 
 	input_a.process()
 	input_b.process()

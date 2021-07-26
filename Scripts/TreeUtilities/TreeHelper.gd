@@ -30,7 +30,3 @@ func list_nodes(root_node: Node = null) -> void:
 		print()
 		
 		list_nodes(child)
-
-func instantiate_node_from_filename_value(data_dict: Dictionary) -> Node:
-	var filename = data_dict[DataKeys.filename_key]
-	return load(filename).instance()
