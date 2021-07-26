@@ -177,7 +177,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Logic Gates"
-run/main_scene="res://Tests/UnitTestScene.tscn"
+run/main_scene="res://Scenes/SandBox.tscn"
 config/icon="res://icon.png"
 
 [autoload]

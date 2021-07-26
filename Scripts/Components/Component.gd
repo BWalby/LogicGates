@@ -1,6 +1,7 @@
 extends Object
 class_name Component
 
+# TODO: make this identifier or name, not ID, as the ID is UID
 var id: String
 var uid: int
 var input_uids := []

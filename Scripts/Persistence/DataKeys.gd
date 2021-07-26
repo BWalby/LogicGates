@@ -7,14 +7,14 @@ const pos_x_key := "pos_x"
 const pos_y_key := "pos_y"
 const type_definition_uid_key = "type_definition_uid"
 
-const auto_generate_data_keys = [
-	DataKeys.id_key,
-	DataKeys.uid_key,
-	DataKeys.input_uids_key,
+var auto_generate_data_keys = [
+	id_key,
+	uid_key,
+	input_uids_key
 ]
 
-const data_keys = auto_generate_data_keys + [
-  DataKeys.type_definition_uid_key,
-  DataKeys.pos_x_key,
-  DataKeys.pos_y_key
+var data_keys = auto_generate_data_keys + [
+  type_definition_uid_key,
+  pos_x_key,
+  pos_y_key
 ]

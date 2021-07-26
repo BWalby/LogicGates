@@ -3,7 +3,7 @@ class_name ComponentController
 
 var predicate_helper := GatePredicateHelper.new()
 var factory := ComponentFactory.new(predicate_helper)
-var custom_type_definitions: Dictionary = []
+var custom_type_definitions: Dictionary = {}
 var components: Dictionary = {}
 
 signal custom_definition_added(type_definition)
@@ -12,12 +12,12 @@ signal component_added(component)
 signal component_removed(component)
 
 func add_definition(definition: ComponentTypeDefinition) -> void:
-	custom_type_definitions.append(definition)
+	custom_type_definitions[definition.uid] = definition
 	emit_signal("custom_definition_added", definition)
 	
 func remove_definition(definition: ComponentTypeDefinition) -> void:
-	custom_type_definitions.erase(definition)
-	emit_signal("custom_definition_removed", definition)
+	if custom_type_definitions.erase(definition):
+		emit_signal("custom_definition_removed", definition)
 	
 func add_component(component: Component) -> void:
 	components[component.uid] = component
@@ -88,7 +88,8 @@ func validate_component_dictionary(dict: Dictionary) -> void:
 
 func load_component(dict: Dictionary) -> Component:
 	validate_component_dictionary(dict)
-	return LoadStrategy.load(dict, factory)	
+
+	return LoadStrategy.load(dict, factory, custom_type_definitions)	
 
 func save(file_path: String) -> void:
 	var dictionaries = generate_component_dictionaries()
