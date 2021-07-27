@@ -1,6 +1,5 @@
 extends "res://addons/gut/test.gd"
 
-var factory := ComponentFactory.new(GatePredicateHelper.new())
 var and_type_definition = TestSetupHelper.create_and_component_type_defintion()
 var not_type_definition = TestSetupHelper.create_not_component_type_defintion()
 
@@ -16,10 +15,10 @@ func assert_component_at_index(graph: Array, component: Component, expected_inde
 #	    ---Combinator
 # B--/
 func test_ordered_graph_2_inputs_to_combinator():
-  var input_a = factory.create_input_component(true, "InputA")
-  var input_b = factory.create_input_component(true, "InputB")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
   var input_components = [input_a, input_b]
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalPassThrough")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalPassThrough")
   final_combinator.input_steps = input_components
 	
   var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -33,16 +32,16 @@ func test_ordered_graph_2_inputs_to_combinator():
 #    |		 Combinator
 # B-----AND--/
 func test_ordered_graph_2_inputs_2_ands_then_combinator():
-  var input_a = factory.create_input_component(true, "InputA")
-  var input_b = factory.create_input_component(true, "InputB")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
   var input_components = [input_a, input_b]
-  var and_1 = factory.create_component(and_type_definition, Uid.create(), "And1")
-  var and_2 = factory.create_component(and_type_definition, Uid.create(),"And2")
+  var and_1 = ComponentFactory.create_component(and_type_definition, Uid.create(), "And1")
+  var and_2 = ComponentFactory.create_component(and_type_definition, Uid.create(),"And2")
   and_1.input_steps = input_components
   and_2.input_steps = input_components
 
   var and_components = [and_1, and_2]
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalPassThrough")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalPassThrough")
   final_combinator.input_steps = and_components
 
   var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -60,17 +59,17 @@ func test_ordered_graph_2_inputs_2_ands_then_combinator():
 #			Combinator
 # C--NOT--/  
 func test_ordered_graph_top_weighted_branch():
-  var input_a = factory.create_input_component(true, "InputA")
-  var input_b = factory.create_input_component(true, "InputB")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
   var inputs_a_b = [input_a, input_b]
-  var and_component = factory.create_component(and_type_definition, Uid.create(), "And")
+  var and_component = ComponentFactory.create_component(and_type_definition, Uid.create(), "And")
   and_component.input_steps = inputs_a_b
 	
-  var input_c = factory.create_input_component(true, "InputC")
-  var not_component = factory.create_component(not_type_definition, Uid.create(), "Not")
+  var input_c = ComponentFactory.create_input_component(true, "InputC")
+  var not_component = ComponentFactory.create_component(not_type_definition, Uid.create(), "Not")
   not_component.input_steps = [input_c]
 
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalCombinator")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalCombinator")
   final_combinator.input_steps = [and_component, not_component]
 
   var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -90,17 +89,17 @@ func test_ordered_graph_top_weighted_branch():
 #	  AND--/
 # C--/
 func test_ordered_graph_bottom_weighted_branch():
-  var input_a = factory.create_input_component(true, "InputA")
-  var not_component = factory.create_component(not_type_definition, Uid.create(), "Not")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var not_component = ComponentFactory.create_component(not_type_definition, Uid.create(), "Not")
   not_component.input_steps = [input_a]
 
-  var input_b = factory.create_input_component(true, "InputB")
-  var input_c = factory.create_input_component(true, "InputC")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
+  var input_c = ComponentFactory.create_input_component(true, "InputC")
   var inputs_b_c = [input_b, input_c]
-  var and_component = factory.create_component(and_type_definition, Uid.create(), "And")
+  var and_component = ComponentFactory.create_component(and_type_definition, Uid.create(), "And")
   and_component.input_steps = inputs_b_c
 
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalCombinator")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalCombinator")
   final_combinator.input_steps = [not_component, and_component]
 
   var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -117,13 +116,13 @@ func test_ordered_graph_bottom_weighted_branch():
 #     |      AND---\
 # B--/------/-------Combinator
 func test_ordered_graph_2_ands_a_passed_to_second_then_combinator():
-  var input_a = factory.create_input_component(true, "InputA")
-  var input_b = factory.create_input_component(true, "InputB")
-  var first_and = factory.create_component(and_type_definition, Uid.create(), "And1")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
+  var first_and = ComponentFactory.create_component(and_type_definition, Uid.create(), "And1")
   first_and.input_steps = [input_a, input_b]
-  var second_and = factory.create_component(and_type_definition, Uid.create(), "And2")
+  var second_and = ComponentFactory.create_component(and_type_definition, Uid.create(), "And2")
   second_and.input_steps = [first_and, input_b]
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalCombinator")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalCombinator")
   final_combinator.input_steps = [second_and, input_b]
 
   var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -142,13 +141,13 @@ func test_ordered_graph_2_ands_a_passed_to_second_then_combinator():
 #     AND--/        |
 # B--/--------------/
 func test_ordered_graph_2_ands_a_passed_to_second_b_passed_combinator():
-  var input_a = factory.create_input_component(true, "InputA")
-  var input_b = factory.create_input_component(true, "InputB")
-  var first_and = factory.create_component(and_type_definition, Uid.create(), "And1")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
+  var first_and = ComponentFactory.create_component(and_type_definition, Uid.create(), "And1")
   first_and.input_steps = [input_a, input_b]
-  var second_and = factory.create_component(and_type_definition, Uid.create(), "And2")
+  var second_and = ComponentFactory.create_component(and_type_definition, Uid.create(), "And2")
   second_and.input_steps = [input_a, first_and]
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalCombinator")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalCombinator")
   final_combinator.input_steps = [second_and, input_b]
 
   var graph = GraphBuilder.get_ordered_graph(final_combinator)
@@ -167,18 +166,18 @@ func test_ordered_graph_2_ands_a_passed_to_second_b_passed_combinator():
 # B-PasThrough-/      |
 # C-PasThrough--------/  
 func test_ordered_graph_2_buffered_inputs_to_and_1_buffered_input_to_combinator_with_and():
-  var input_a = factory.create_input_component(true, "InputA")
-  var input_b = factory.create_input_component(true, "InputB")
-  var input_c = factory.create_input_component(true, "InputC")
-  var buffer_a = factory.create_pass_through_component(1, 100, "BufferA")
+  var input_a = ComponentFactory.create_input_component(true, "InputA")
+  var input_b = ComponentFactory.create_input_component(true, "InputB")
+  var input_c = ComponentFactory.create_input_component(true, "InputC")
+  var buffer_a = ComponentFactory.create_pass_through_component(1, 100, "BufferA")
   buffer_a.input_steps = [input_a]
-  var buffer_b = factory.create_pass_through_component(1, 100, "BufferB")
+  var buffer_b = ComponentFactory.create_pass_through_component(1, 100, "BufferB")
   buffer_b.input_steps = [input_b]
-  var buffer_c = factory.create_pass_through_component(1, 100, "BufferC")
+  var buffer_c = ComponentFactory.create_pass_through_component(1, 100, "BufferC")
   buffer_c.input_steps = [input_c]
-  var and_component = factory.create_component(and_type_definition, Uid.create(), "And")
+  var and_component = ComponentFactory.create_component(and_type_definition, Uid.create(), "And")
   and_component.input_steps = [buffer_a, buffer_b]
-  var final_combinator = factory.create_pass_through_component(2, 100, "FinalCombinator")
+  var final_combinator = ComponentFactory.create_pass_through_component(2, 100, "FinalCombinator")
   final_combinator.input_steps = [and_component, buffer_c]
 
   var graph = GraphBuilder.get_ordered_graph(final_combinator)

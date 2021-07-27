@@ -7,7 +7,7 @@ var input_value: bool
 
 var process_delegate = funcref(self, gate_predicate_func)
 # TODO: investigate this, something seems wrong, based on counts always being fixed to 1
-var component_type_definition = ComponentTypeDefinition.new(Enums.ComponentType.INPUT, Enums.GatePredicateType.UNEDEFINED, 1, 1, input_type_def_name)
+var component_type_definition = ComponentTypeDefinition.new(Enums.ComponentType.INPUT, Enums.GatePredicateType.UNEDEFINED, 1, 1, input_type_def_name, Uid.create())
 
 # empty array for array, as there are no input components, just an input value
 func _init(initial_value: bool, uid: int, identifier: String = "").(component_type_definition, process_delegate, uid, identifier):

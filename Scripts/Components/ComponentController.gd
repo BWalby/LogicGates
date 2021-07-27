@@ -2,8 +2,10 @@ extends Node
 
 var type_definitions: Dictionary = {}
 var components: Dictionary = {}
+var load_strategy: LoadStrategy = LoadStrategy.new()
 const and_definition_name = "AND"
 const not_definition_name = "NOT"
+const pass_through_definition_name = "PASS_THROUGH_"
 signal custom_definition_added(type_definition)
 signal custom_definition_removed(type_definition)
 signal component_added(component)
@@ -95,9 +97,9 @@ func validate_component_dictionary(dict: Dictionary) -> void:
 
 func load_component(dict: Dictionary) -> Component:
 	validate_component_dictionary(dict)
-	var type_def_uid = LoadStrategy.load_type_def_uid(dict)
+	var type_def_uid = load_strategy.load_type_def_uid(dict)
 	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
-	return LoadStrategy.load(dict, type_def)
+	return load_strategy.load(dict, type_def)
 
 func save(file_path: String) -> void:
 	var dictionaries = generate_component_dictionaries()
@@ -141,3 +143,14 @@ func get_and_type_definition_uid() -> int:
 func get_not_type_definition_uid() -> int:
 	var definition = get_type_definition_by_name(not_definition_name)
 	return definition.uid
+
+func get_pass_through_definition_uid(size: int) -> int:
+	var name = pass_through_definition_name + str(size)
+	var definition = get_type_definition_by_name(name)
+
+	if definition == null:
+		definition = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.PASS_THROUGH, 
+		size, size, name, Uid.create())
+		add_definition(definition)
+	
+	return definition	

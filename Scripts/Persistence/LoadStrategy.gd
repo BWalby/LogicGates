@@ -1,10 +1,10 @@
 extends Object
 class_name LoadStrategy
 
-static func load_type_def_uid(data: Dictionary) -> int:
+func load_type_def_uid(data: Dictionary) -> int:
 	return data[DataKeys.type_definition_uid_key]
 
-static func load(data: Dictionary, type_def: ComponentTypeDefinition) -> Component:
+func load(data: Dictionary, type_def: ComponentTypeDefinition) -> Component:
 	var uid = data[DataKeys.uid_key]
 	var identifier = data[DataKeys.id_key]
 	
