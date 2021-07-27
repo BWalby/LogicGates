@@ -37,12 +37,12 @@ margin_bottom = 73.0
 rect_min_size = Vector2( 50, 0 )
 text = "AND"
 
-[node name="OrButton" type="Button" parent="Toolbox"]
+[node name="NotButton" type="Button" parent="Toolbox"]
 margin_left = 54.0
 margin_right = 104.0
 margin_bottom = 73.0
 rect_min_size = Vector2( 50, 0 )
-text = "OR"
+text = "NOT"
 
 [node name="AddGateHBox" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -86,7 +86,7 @@ text = "save"
 [connection signal="disconnection_request" from="." to="." method="_on_GraphEdit_disconnection_request"]
 [connection signal="tree_exiting" from="." to="." method="_on_GraphEdit_tree_exiting"]
 [connection signal="button_up" from="Toolbox/AndButton" to="Toolbox" method="_on_AndButton_button_up"]
-[connection signal="button_up" from="Toolbox/OrButton" to="Toolbox" method="_on_OrButton_button_up"]
+[connection signal="button_up" from="Toolbox/NotButton" to="Toolbox" method="_on_NotButton_button_up"]
 [connection signal="text_changed" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_changed"]
 [connection signal="text_entered" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_entered"]
 [connection signal="button_up" from="AddGateHBox/AddGateButton" to="." method="_on_AddGateButton_button_up"]

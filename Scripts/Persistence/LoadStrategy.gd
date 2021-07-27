@@ -1,13 +1,24 @@
 extends Object
 class_name LoadStrategy
 
-static func load(data: Dictionary, controller: ComponentController) -> Component:
+static func load_type_def_uid(data: Dictionary) -> int:
+	return data[DataKeys.type_definition_uid_key]
+
+static func load(data: Dictionary, type_def: ComponentTypeDefinition, factory: ComponentFactory) -> Component:
 	var uid = data[DataKeys.uid_key]
-	# TODO: use these somewhere
-	var input_uids = data[DataKeys.input_uids_key]
 	var identifier = data[DataKeys.id_key]
-	var type_def_uid = data[DataKeys.type_definition_uid_key]
-	return controller.create_component(Enums.ComponentType.GATE, type_def_uid)
+	
+	assert(type_def != null, "type definition cannot be null, when loading the component")
+	
+	if type_def == null:
+		return null
+		
+	var component = factory.create_component(type_def, uid, identifier)
+	
+	# TODO: use these somewhere
+	# var input_uids = data[DataKeys.input_uids_key]
+
+	return component
 
 static func populate_node_from_data(data: Dictionary, node: Node) -> void:
 	if data.has_all([DataKeys.offset_x_key, DataKeys.offset_y_key]):
@@ -18,4 +29,4 @@ static func populate_node_from_data(data: Dictionary, node: Node) -> void:
 	
 	for key in data.keys():
 		if DataKeys.auto_generate_data_keys.has(key):
-			node.set(key, data[key])			
+			node.set(key, data[key])

@@ -29,15 +29,6 @@ func remove_definition(definition: ComponentTypeDefinition) -> void:
 	if type_definitions.erase(definition):
 		emit_signal("custom_definition_removed", definition)
 
-func create_component(component_type: int, type_uid: int) -> void:
-	var type_def = get_type_definition(component_type, type_uid)
-
-	if type_def == null:
-		return
-	
-	var component = factory.create_component(type_def)
-	add_component(component)
-
 func add_component(component: Component) -> void:
 	components[component.uid] = component
 	emit_signal("component_added", component)
@@ -107,8 +98,9 @@ func validate_component_dictionary(dict: Dictionary) -> void:
 
 func load_component(dict: Dictionary) -> Component:
 	validate_component_dictionary(dict)
-
-	return LoadStrategy.load(dict)	
+	var type_def_uid = LoadStrategy.load_type_def_uid(dict)
+	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
+	return LoadStrategy.load(dict, type_def, factory)	
 
 func save(file_path: String) -> void:
 	var dictionaries = generate_component_dictionaries()
