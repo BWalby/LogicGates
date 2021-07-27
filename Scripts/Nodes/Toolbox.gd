@@ -19,7 +19,10 @@ func create_gate_button(name) -> Button:
 	return gate_button
 
 func _on_AndButton_button_up():
-	emit_signal("gate_clicked", "AND", 2, 1)
+	emit_gate_clicked(Enums.ComponentType.AND)
 
 func _on_OrButton_button_up():
-	emit_signal("gate_clicked", "OR", 2, 1)
+	emit_gate_clicked(Enums.ComponentType.OR)
+
+func emit_gate_clicked(component_type: int, type_uid: int = -1):
+	emit_signal("gate_clicked", component_type, type_uid)
