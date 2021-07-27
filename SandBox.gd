@@ -7,7 +7,6 @@ const SAVE_FILE_PATH = "user://data.save"
 onready var add_gate_button = $AddGateHBox/AddGateButton
 onready var gate_name_line_edit = $AddGateHBox/GateNameLineEdit
 onready var toolbox = $"Toolbox"
-onready var component_controller := ComponentController.new()
 
 func _ready():
 	self.right_disconnects = true
@@ -17,10 +16,10 @@ func _ready():
 	load_persisted_data()
 
 func hook_controller() -> void:
-	connect("custom_definition_added", component_controller, "on_custom_definition_added")
-	connect("custom_definition_removed", component_controller, "on_custom_definition_removed")
-	connect("component_added", component_controller, "on_component_added")
-	connect("component_removed", component_controller, "on_component_removed")
+	connect("custom_definition_added", ComponentController, "on_custom_definition_added")
+	connect("custom_definition_removed", ComponentController, "on_custom_definition_removed")
+	connect("component_added", ComponentController, "on_component_added")
+	connect("component_removed", ComponentController, "on_component_removed")
 
 func on_custom_definition_added(type_definition: ComponentTypeDefinition) -> void:
 	pass
@@ -41,8 +40,9 @@ func process_gate_name_submitted() -> void:
 	$Toolbox.add_gate(input)
 
 func on_gate_clicked(component_type: int, type_uid: int) -> void:
-	component_controller.create
-	var node = create_node(name, input_count, output_count)
+	var type_def: ComponentTypeDefinition = ComponentController.get_type_definition(component_type, type_uid)
+	var component = ComponentFactory.create_component(type_def)
+	var node = create_node(component.id, type_def.input_count, type_def.output_count)
 	move_gate_to_mouse(node)
 
 func move_gate_to_mouse(node: GraphNode) -> void:
@@ -88,7 +88,7 @@ func on_graph_node_closed(node: GraphNode):
 func load_persisted_data() -> void:
 	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
 	TreeHelper.remove_persisted_nodes()
-	component_controller.load(SAVE_FILE_PATH)
+	ComponentController.load(SAVE_FILE_PATH)
 
 func create_node_from_component(component: Component) -> void:
 	# TODO: asserts can be removed?
@@ -107,7 +107,7 @@ func create_node(id: String, input_count: int, output_count: int) -> GraphNode:
 	return node
 
 func save_persisted_nodes() -> void:
-	component_controller.save(SAVE_FILE_PATH)
+	ComponentController.save(SAVE_FILE_PATH)
 
 func _on_GraphEdit_tree_exiting():
 	# child nodes seem to already be leaving the tree in this event

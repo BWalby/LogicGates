@@ -1,6 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 var factory := ComponentFactory.new(GatePredicateHelper.new())
+var and_type_definition = TestSetupHelper.create_and_component_type_defintion()
 
 var and_gate_config_inline_data = [
 	[false, false, false],
@@ -17,7 +18,7 @@ func test_component_and_gate_config(params=use_parameters(and_gate_config_inline
 	
 	var input_steps = [mock_a, mock_b]
 
-	var and_component = factory.create_and_component("And")
+	var and_component = factory.create_component(and_type_definition, Uid.create())
 	and_component.input_steps = input_steps
 
 	var result = and_component.process()

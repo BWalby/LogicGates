@@ -1,5 +1,4 @@
-extends Object
-class_name GatePredicateHelper
+extends Node
 
 const gate_predicate_func: String = "predicate"
 

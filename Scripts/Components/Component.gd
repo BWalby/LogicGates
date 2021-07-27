@@ -4,6 +4,7 @@ class_name Component
 # TODO: make this identifier or name, not ID, as the ID is UID
 var id: String
 var uid: int
+# TODO: make use of these as they are now populated on load
 var input_uids := []
 var input_steps := []
 # can be setup via:
@@ -16,8 +17,8 @@ var position: Vector2 = Vector2.ZERO setget set_position
 
 signal position_changed(position)
 
-func _init(component_type_definition: ComponentTypeDefinition, process_delegate: FuncRef, persisted_uid: int = 0, identifier: String = ""):
-	self.uid = persisted_uid if persisted_uid > 0 else Uid.create()
+func _init(component_type_definition: ComponentTypeDefinition, process_delegate: FuncRef, persisted_uid: int, identifier: String = ""):
+	self.uid = persisted_uid
 	self.process_step = process_delegate
 	self.id = identifier
 	self.type_definition = component_type_definition

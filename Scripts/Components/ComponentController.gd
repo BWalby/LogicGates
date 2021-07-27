@@ -1,8 +1,5 @@
-extends Object
-class_name ComponentController
+extends Node
 
-var predicate_helper := GatePredicateHelper.new()
-var factory := ComponentFactory.new(predicate_helper)
 var type_definitions: Dictionary = {}
 var components: Dictionary = {}
 const and_definition_name = "AND"
@@ -14,12 +11,12 @@ signal component_removed(component)
 
 func _init():
 	var and_type_def = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.AND, 
-		2, 1, 1, and_definition_name)
+		2, 1, and_definition_name, 1)
 	var not_type_def = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.NOT, 
-		1, 1, 2, not_definition_name)
+		1, 1, not_definition_name, 2)
 	add_definition(and_type_def)
 	add_definition(not_type_def)
-	Uid.set_seed_value = 2
+	Uid.set_seed_value(2)
 
 func add_definition(definition: ComponentTypeDefinition) -> void:
 	type_definitions[definition.uid] = definition
@@ -75,12 +72,12 @@ func load_definition(dict: Dictionary) -> ComponentTypeDefinition:
 	validate_definition_dictionary(dict)
 	var type = dict[ComponentTypeDefinitionDataKeys.component_type_key]
 	var type_uid = dict[ComponentTypeDefinitionDataKeys.uid_key]
-	var custom_type = dict[ComponentTypeDefinitionDataKeys.component_custom_type_key]
+	var name = dict[ComponentTypeDefinitionDataKeys.component_name_key]
 	var predicate_type = dict[ComponentTypeDefinitionDataKeys.component_predicate_type_key]
 	var input_count = dict[ComponentTypeDefinitionDataKeys.component_input_count_key]
 	var output_count = dict[ComponentTypeDefinitionDataKeys.component_output_count_key]
 	
-	return ComponentTypeDefinition.new(type, predicate_type, input_count, output_count, type_uid, custom_type)
+	return ComponentTypeDefinition.new(type, predicate_type, input_count, output_count, name, type_uid)
 
 func validate_component_dictionary(dict: Dictionary) -> void:
 	# todo: add keys to validate
@@ -100,7 +97,7 @@ func load_component(dict: Dictionary) -> Component:
 	validate_component_dictionary(dict)
 	var type_def_uid = LoadStrategy.load_type_def_uid(dict)
 	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
-	return LoadStrategy.load(dict, type_def, factory)	
+	return LoadStrategy.load(dict, type_def)
 
 func save(file_path: String) -> void:
 	var dictionaries = generate_component_dictionaries()
@@ -115,7 +112,7 @@ func generate_component_dictionaries() -> Array:
 	return dictionaries
 
 func get_type_definition(component_type: int, type_def_uid: int) -> ComponentTypeDefinition:
-	assert(component_type == Enums.ComponentType.GATE && type_def_uid < 1, "UID must be greater than 0")
+	assert(component_type == Enums.ComponentType.GATE && type_def_uid > 0, "UID must be greater than 0")
 
 	match component_type:
 		Enums.ComponentType.GATE:

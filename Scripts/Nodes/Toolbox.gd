@@ -21,9 +21,8 @@ func create_gate_button(name) -> Button:
 	return gate_button
 
 func _ready():
-	var controller: ComponentController = $Sandbox.component_controller
-	and_type_def_uid = controller.get_and_type_definition_uid()
-	not_type_def_uid = controller.get_not_type_definition_uid()
+	and_type_def_uid = ComponentController.get_and_type_definition_uid()
+	not_type_def_uid = ComponentController.get_not_type_definition_uid()
 
 func _on_AndButton_button_up():
 	emit_gate_clicked(Enums.ComponentType.GATE, and_type_def_uid)

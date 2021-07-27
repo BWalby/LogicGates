@@ -30,16 +30,6 @@ _global_script_classes=[ {
 "path": "res://Scripts/Components/Component.gd"
 }, {
 "base": "Object",
-"class": "ComponentController",
-"language": "GDScript",
-"path": "res://Scripts/Components/ComponentController.gd"
-}, {
-"base": "Object",
-"class": "ComponentFactory",
-"language": "GDScript",
-"path": "res://Scripts/Components/ComponentFactory.gd"
-}, {
-"base": "Object",
 "class": "ComponentSorter",
 "language": "GDScript",
 "path": "res://Scripts/Runner/ComponentSorter.gd"
@@ -90,11 +80,6 @@ _global_script_classes=[ {
 "path": "res://Scripts/Gates/Gate.gd"
 }, {
 "base": "Object",
-"class": "GatePredicateHelper",
-"language": "GDScript",
-"path": "res://Scripts/Gates/GatePredicateHelper.gd"
-}, {
-"base": "Object",
 "class": "GraphBuilder",
 "language": "GDScript",
 "path": "res://Scripts/Runner/GraphBuilder.gd"
@@ -143,14 +128,17 @@ _global_script_classes=[ {
 "class": "SaveStrategy",
 "language": "GDScript",
 "path": "res://Scripts/Persistence/SaveStrategy.gd"
+}, {
+"base": "Object",
+"class": "TestSetupHelper",
+"language": "GDScript",
+"path": "res://Tests/TestSetupHelper.gd"
 } ]
 _global_script_class_icons={
 "AndGate": "",
 "CharMapper": "",
 "CombinatorComponent": "",
 "Component": "",
-"ComponentController": "",
-"ComponentFactory": "",
 "ComponentSorter": "",
 "ComponentTypeDefinition": "",
 "ComponentTypeDefinitionDataKeys": "",
@@ -161,7 +149,6 @@ _global_script_class_icons={
 "DataKeys": "",
 "Enums": "",
 "Gate": "",
-"GatePredicateHelper": "",
 "GraphBuilder": "",
 "InputComponent": "",
 "LoadStrategy": "",
@@ -171,7 +158,8 @@ _global_script_class_icons={
 "PassThroughGate": "",
 "Persistence": "",
 "Runner": "",
-"SaveStrategy": ""
+"SaveStrategy": "",
+"TestSetupHelper": ""
 }
 
 [application]
@@ -184,6 +172,9 @@ config/icon="res://icon.png"
 
 Uid="*res://Scripts/PrimitiveTypeUtilities/Uid.gd"
 TreeHelper="*res://Scripts/TreeUtilities/TreeHelper.gd"
+GatePredicateHelper="*res://Scripts/Gates/GatePredicateHelper.gd"
+ComponentFactory="*res://Scripts/Components/ComponentFactory.gd"
+ComponentController="*res://Scripts/Components/ComponentController.gd"
 
 [editor_plugins]
 
