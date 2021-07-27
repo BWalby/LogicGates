@@ -1,7 +1,7 @@
 extends Object
 class_name Enums
 
-enum ComponentType { UNDEFINED = -1, INPUT, AND, NOT, PASS_THROUGH, CUSTOM }
+enum ComponentType { INPUT, GATE }
 enum GatePredicateType { UNEDEFINED = -1, AND, NOT, PASS_THROUGH }
 
 static func is_component_type_valid(input: int) -> bool:

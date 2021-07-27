@@ -1,5 +1,5 @@
-extends GraphNode
 class_name CustomGraphNode
+extends GraphNode
 
 signal graph_node_close(node)
 
@@ -45,6 +45,7 @@ func _on_GraphNode_close_request():
 
 func on_component_position_changed(position: Vector2) -> void:
 	self.offset = position
+	#TODO: propagate this to the Sandbox.gd
 
 func on_GraphNode_offset_changed():
 	# todo: set position directly or call the setget stated method?

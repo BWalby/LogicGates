@@ -11,7 +11,7 @@ onready var component_controller := ComponentController.new()
 
 func _ready():
 	self.right_disconnects = true
-	toolbox.connect("gate_clicked", self, "create_gate_node")
+	toolbox.connect("gate_clicked", self, "on_gate_clicked")
 	OS.low_processor_usage_mode = true
 	hook_controller()
 	load_persisted_data()
@@ -40,7 +40,8 @@ func process_gate_name_submitted() -> void:
 	add_gate_button.disabled = true
 	$Toolbox.add_gate(input)
 
-func create_gate_node(name: String, input_count: int, output_count: int) -> void:
+func on_gate_clicked(component_type: int, type_uid: int) -> void:
+	component_controller.create
 	var node = create_node(name, input_count, output_count)
 	move_gate_to_mouse(node)
 
@@ -93,11 +94,12 @@ func create_node_from_component(component: Component) -> void:
 	# TODO: asserts can be removed?
 	# assert(TreeHelper.has_load_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
 	# node.call(TreeHelper.load_from_data_dict_method_name, node_data)
-	var definition = component.type_definition
-	var node = create_node(component.id, definition.input_count, definition.output_count)
+	var node: GraphNode = GRAPH_NODE.instance()
+	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+	add_child(node)
 
-func create_node(id: String, input_count: int, output_count: int) -> CustomGraphNode:
-	var node: CustomGraphNode = GRAPH_NODE.instance()
+func create_node(id: String, input_count: int, output_count: int) -> GraphNode:
+	var node: GraphNode = GRAPH_NODE.instance()
 	node.title = id
 	node.setup(input_count, output_count)
 	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")

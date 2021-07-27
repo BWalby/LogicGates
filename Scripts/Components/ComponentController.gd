@@ -3,22 +3,41 @@ class_name ComponentController
 
 var predicate_helper := GatePredicateHelper.new()
 var factory := ComponentFactory.new(predicate_helper)
-var custom_type_definitions: Dictionary = {}
+var type_definitions: Dictionary = {}
 var components: Dictionary = {}
-
+const and_definition_name = "AND"
+const not_definition_name = "NOT"
 signal custom_definition_added(type_definition)
 signal custom_definition_removed(type_definition)
 signal component_added(component)
 signal component_removed(component)
 
+func _init():
+	var and_type_def = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.AND, 
+		2, 1, 1, and_definition_name)
+	var not_type_def = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.NOT, 
+		1, 1, 2, not_definition_name)
+	add_definition(and_type_def)
+	add_definition(not_type_def)
+	Uid.set_seed_value = 2
+
 func add_definition(definition: ComponentTypeDefinition) -> void:
-	custom_type_definitions[definition.uid] = definition
+	type_definitions[definition.uid] = definition
 	emit_signal("custom_definition_added", definition)
 	
 func remove_definition(definition: ComponentTypeDefinition) -> void:
-	if custom_type_definitions.erase(definition):
+	if type_definitions.erase(definition):
 		emit_signal("custom_definition_removed", definition)
+
+func create_component(component_type: int, type_uid: int) -> void:
+	var type_def = get_type_definition(component_type, type_uid)
+
+	if type_def == null:
+		return
 	
+	var component = factory.create_component(type_def)
+	add_component(component)
+
 func add_component(component: Component) -> void:
 	components[component.uid] = component
 	emit_signal("component_added", component)
@@ -89,7 +108,7 @@ func validate_component_dictionary(dict: Dictionary) -> void:
 func load_component(dict: Dictionary) -> Component:
 	validate_component_dictionary(dict)
 
-	return LoadStrategy.load(dict, factory, custom_type_definitions)	
+	return LoadStrategy.load(dict)	
 
 func save(file_path: String) -> void:
 	var dictionaries = generate_component_dictionaries()
@@ -102,3 +121,34 @@ func generate_component_dictionaries() -> Array:
 		dictionaries.append(SaveStrategy.generate_data_dict(component))
 
 	return dictionaries
+
+func get_type_definition(component_type: int, type_def_uid: int) -> ComponentTypeDefinition:
+	assert(component_type == Enums.ComponentType.GATE && type_def_uid < 1, "UID must be greater than 0")
+
+	match component_type:
+		Enums.ComponentType.GATE:
+			assert(type_definitions.has(type_def_uid), "Custom type definition does not exist: '%s'" % type_def_uid)
+			return type_definitions[type_def_uid]
+		Enums.ComponentType.INPUT:
+			assert(true, "TODO: NOT SURE HERE")
+			return null
+		_:
+			assert(true, "Unsupported type definition UID")
+			return null
+
+
+func get_type_definition_by_name(type_def_name: String) -> ComponentTypeDefinition:
+	for key in type_definitions:
+		var definition = type_definitions[key]
+		if definition.name == type_def_name:
+			return definition
+	
+	return null
+
+func get_and_type_definition_uid() -> int:
+	var definition = get_type_definition_by_name(and_definition_name)
+	return definition.uid
+
+func get_not_type_definition_uid() -> int:
+	var definition = get_type_definition_by_name(not_definition_name)
+	return definition.uid
