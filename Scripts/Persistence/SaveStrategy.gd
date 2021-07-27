@@ -11,4 +11,4 @@ static func generate_dict(component: Component) -> Dictionary:
   dict[DataKeys.pos_x_key] = component.position.x
   dict[DataKeys.pos_y_key] = component.position.y
 
-return dict
+  return dict
