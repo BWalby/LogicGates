@@ -4,8 +4,8 @@ const GRAPH_NODE = preload("res://Scenes/CustomGraphNode.tscn")
 const GRAPH_NODE_CLOSE_EVENT = "graph_node_close"
 const SAVE_FILE_PATH = "user://data.save"
 
-onready var add_gate_button = $AddGateHBox/AddGateButton
-onready var gate_name_line_edit = $AddGateHBox/GateNameLineEdit
+onready var add_gate_button = $AddDefinitionHBox/AddDefinitionButton
+onready var gate_name_line_edit = $AddDefinitionHBox/DefinitionNameLineEdit
 onready var toolbox = $"Toolbox"
 
 func _ready():
@@ -16,22 +16,24 @@ func _ready():
 	load_persisted_data()
 
 func hook_controller() -> void:
-	connect("custom_definition_added", ComponentController, "on_custom_definition_added")
-	connect("custom_definition_removed", ComponentController, "on_custom_definition_removed")
-	connect("component_added", ComponentController, "on_component_added")
-	connect("component_removed", ComponentController, "on_component_removed")
+	var hook_errors = 0
+	# hook_errors |= ComponentController.connect("type_definition_added", self, "_on_type_definition_added")
+	# hook_errors |= ComponentController.connect("type_definition_removed", self, "_on_type_definition_removed")
+	hook_errors |= ComponentController.connect("component_added", self, "_on_component_added")
+	# hook_errors |= ComponentController.connect("component_removed", self, "_on_component_removed")
+	assert(hook_errors == OK)
 
-func on_custom_definition_added(type_definition: ComponentTypeDefinition) -> void:
-	pass
+# func _on_type_definition_added(type_definition: ComponentTypeDefinition) -> void:
+# 	pass
 
-func on_custom_definition_removed(type_definition: ComponentTypeDefinition) -> void:
-	pass
+# func _on_type_definition_removed(type_definition: ComponentTypeDefinition) -> void:
+# 	pass
 	
-func on_component_added(component: Component) -> void:
+func _on_component_added(component: Component) -> void:
 	create_node_from_component(component)
 	
-func on_component_removed(component: Component) -> void:
-	pass	
+# func _on_component_removed(component: Component) -> void:
+# 	pass
 	
 func process_gate_name_submitted() -> void:
 	var input = gate_name_line_edit.text.to_upper()
@@ -42,8 +44,10 @@ func process_gate_name_submitted() -> void:
 func on_gate_clicked(component_type: int, type_uid: int) -> void:
 	var type_def: ComponentTypeDefinition = ComponentController.get_type_definition(component_type, type_uid)
 	var component = ComponentFactory.create_component(type_def)
-	var node = create_node(component.id, type_def.input_count, type_def.output_count)
-	move_gate_to_mouse(node)
+	ComponentController.add_component(component)
+	# TODO: still utilise the move_gate_to_mouse
+	#	var node = create_node(component.id, type_def.input_count, type_def.output_count)
+	#	move_gate_to_mouse(node)
 
 func move_gate_to_mouse(node: GraphNode) -> void:
 	var node_size_halved = node.rect_size / 2.0
@@ -53,14 +57,14 @@ func move_gate_to_mouse(node: GraphNode) -> void:
 func is_name_valid(text) -> bool:
 	return text != ""
 
-func _on_GateNameLineEdit_text_entered(new_text) -> void:
-	if is_name_valid(new_text):
-		process_gate_name_submitted()
-
-func _on_AddGateButton_button_up() -> void:
+func _on_AddDefinitionButton_button_up() -> void:
 	process_gate_name_submitted()
 	
-func _on_GateNameLineEdit_text_changed(new_text) -> void:
+func _on_DefinitionNameLineEdit_text_entered(new_text) -> void:
+	if is_name_valid(new_text):
+		process_gate_name_submitted()
+	
+func _on_DefinitionNameLineEdit_text_changed(new_text) -> void:
 	add_gate_button.disabled = !is_name_valid(new_text)
 
 # connection list entry example:
@@ -79,7 +83,8 @@ func is_graph_node_input_slot_populated(node_name: String, slot_index: int):
 
 func _on_GraphEdit_connection_request(from, from_slot, to, to_slot) -> void:
 	if !is_graph_node_input_slot_populated(to, to_slot):
-		connect_node(from, from_slot, to, to_slot)
+		var hook_errors = connect_node(from, from_slot, to, to_slot)
+		assert(hook_errors == OK)
 
 func on_graph_node_closed(node: GraphNode):
 	node.disconnect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
@@ -91,20 +96,11 @@ func load_persisted_data() -> void:
 	ComponentController.load(SAVE_FILE_PATH)
 
 func create_node_from_component(component: Component) -> void:
-	# TODO: asserts can be removed?
-	# assert(TreeHelper.has_load_method(node), ("node is missing required method: %s" % TreeHelper.load_from_data_dict_method_name))
-	# node.call(TreeHelper.load_from_data_dict_method_name, node_data)
-	var node: GraphNode = GRAPH_NODE.instance()
-	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+	var node: CustomGraphNode = GRAPH_NODE.instance()
+	node.intialise(component)
+	var hook_errors = node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+	assert(hook_errors == OK, "Unable to hoook to event: on_graph_node_closed")
 	add_child(node)
-
-func create_node(id: String, input_count: int, output_count: int) -> GraphNode:
-	var node: GraphNode = GRAPH_NODE.instance()
-	node.title = id
-	node.setup(input_count, output_count)
-	node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
-	add_child(node)
-	return node
 
 func save_persisted_nodes() -> void:
 	ComponentController.save(SAVE_FILE_PATH)

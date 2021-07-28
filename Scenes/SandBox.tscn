@@ -44,7 +44,7 @@ margin_bottom = 73.0
 rect_min_size = Vector2( 50, 0 )
 text = "NOT"
 
-[node name="AddGateHBox" type="HBoxContainer" parent="."]
+[node name="AddDefinitionHBox" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 margin_left = 230.0
 margin_top = 3.05945
@@ -54,12 +54,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GateNameLineEdit" type="LineEdit" parent="AddGateHBox"]
+[node name="DefinitionNameLineEdit" type="LineEdit" parent="AddDefinitionHBox"]
 margin_right = 725.0
 margin_bottom = 46.0
 size_flags_horizontal = 3
 
-[node name="AddGateButton" type="Button" parent="AddGateHBox"]
+[node name="AddDefinitionButton" type="Button" parent="AddDefinitionHBox"]
 margin_left = 729.0
 margin_right = 779.0
 margin_bottom = 46.0
@@ -87,7 +87,7 @@ text = "save"
 [connection signal="tree_exiting" from="." to="." method="_on_GraphEdit_tree_exiting"]
 [connection signal="button_up" from="Toolbox/AndButton" to="Toolbox" method="_on_AndButton_button_up"]
 [connection signal="button_up" from="Toolbox/NotButton" to="Toolbox" method="_on_NotButton_button_up"]
-[connection signal="text_changed" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_changed"]
-[connection signal="text_entered" from="AddGateHBox/GateNameLineEdit" to="." method="_on_GateNameLineEdit_text_entered"]
-[connection signal="button_up" from="AddGateHBox/AddGateButton" to="." method="_on_AddGateButton_button_up"]
+[connection signal="text_changed" from="AddDefinitionHBox/DefinitionNameLineEdit" to="." method="_on_DefinitionNameLineEdit_text_changed"]
+[connection signal="text_entered" from="AddDefinitionHBox/DefinitionNameLineEdit" to="." method="_on_DefinitionNameLineEdit_text_entered"]
+[connection signal="button_up" from="AddDefinitionHBox/AddDefinitionButton" to="." method="_on_AddDefinitionButton_button_up"]
 [connection signal="pressed" from="SaveButton" to="." method="_on_SaveButton_pressed"]

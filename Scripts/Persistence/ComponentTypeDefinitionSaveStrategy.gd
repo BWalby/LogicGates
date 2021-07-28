@@ -2,9 +2,9 @@ extends Object
 class_name ComponentTypeDefinitionSaveStrategy
 
 const data_keys = [
-	ComponentTypeDefinitionDataKeys.component_custom_type_key,
+	ComponentTypeDefinitionDataKeys.component_name_key,
 	ComponentTypeDefinitionDataKeys.uid_key,
-	ComponentTypeDefinitionDataKeys.component_custom_type_key,
+	ComponentTypeDefinitionDataKeys.component_type_key,
 	ComponentTypeDefinitionDataKeys.component_predicate_type_key,
 	ComponentTypeDefinitionDataKeys.component_input_count_key,
 	ComponentTypeDefinitionDataKeys.component_output_count_key

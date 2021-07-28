@@ -6,8 +6,8 @@ var load_strategy: LoadStrategy = LoadStrategy.new()
 const and_definition_name = "AND"
 const not_definition_name = "NOT"
 const pass_through_definition_name = "PASS_THROUGH_"
-signal custom_definition_added(type_definition)
-signal custom_definition_removed(type_definition)
+signal type_definition_added(type_definition)
+signal type_definition_removed(type_definition)
 signal component_added(component)
 signal component_removed(component)
 
@@ -22,11 +22,11 @@ func _init():
 
 func add_definition(definition: ComponentTypeDefinition) -> void:
 	type_definitions[definition.uid] = definition
-	emit_signal("custom_definition_added", definition)
+	emit_signal("type_definition_added", definition)
 	
 func remove_definition(definition: ComponentTypeDefinition) -> void:
 	if type_definitions.erase(definition):
-		emit_signal("custom_definition_removed", definition)
+		emit_signal("type_definition_removed", definition)
 
 func add_component(component: Component) -> void:
 	components[component.uid] = component

@@ -5,5 +5,9 @@ func create_component(component_type_def: ComponentTypeDefinition, uid: int = 0,
 	
 	if uid == 0:
 		uid = Uid.create()
+
+	if !identifier:
+		identifier = component_type_def.name + "_" + str(uid)
+
 	
 	return Component.new(component_type_def, predicate, uid, identifier)

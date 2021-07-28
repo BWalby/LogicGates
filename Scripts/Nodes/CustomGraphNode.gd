@@ -6,7 +6,7 @@ signal graph_node_close(node)
 var component: Component
 var load_strategy = CustomGraphNodeLoadStrategy.new()
 
-func _init(component_model: Component):
+func intialise(component_model: Component):
 	self.component = component_model
 	var type_def = component.type_definition
 	setup_slots(type_def.input_count, type_def.output_count)
