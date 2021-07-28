@@ -17,23 +17,29 @@ func _ready():
 
 func hook_controller() -> void:
 	var hook_errors = 0
-	# hook_errors |= ComponentController.connect("type_definition_added", self, "_on_type_definition_added")
-	# hook_errors |= ComponentController.connect("type_definition_removed", self, "_on_type_definition_removed")
+	hook_errors |= ComponentController.connect("type_definition_added", self, "_on_type_definition_added")
+	hook_errors |= ComponentController.connect("type_definition_removed", self, "_on_type_definition_removed")
 	hook_errors |= ComponentController.connect("component_added", self, "_on_component_added")
-	# hook_errors |= ComponentController.connect("component_removed", self, "_on_component_removed")
+	hook_errors |= ComponentController.connect("component_removed", self, "_on_component_removed")
 	assert(hook_errors == OK)
 
-# func _on_type_definition_added(type_definition: ComponentTypeDefinition) -> void:
-# 	pass
+func load_persisted_data() -> void:
+	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
+	TreeHelper.remove_persisted_nodes()
+	ComponentController.load(SAVE_FILE_PATH)
 
-# func _on_type_definition_removed(type_definition: ComponentTypeDefinition) -> void:
-# 	pass
+func _on_type_definition_added(type_definition: ComponentTypeDefinition) -> void:
+	pass
+
+func _on_type_definition_removed(type_definition: ComponentTypeDefinition) -> void:
+	pass
 	
 func _on_component_added(component: Component) -> void:
-	create_node_from_component(component)
+	var graph_node = create_node_from_component(component)
+	move_graph_node_to_mouse(graph_node)
 	
-# func _on_component_removed(component: Component) -> void:
-# 	pass
+func _on_component_removed(component: Component) -> void:
+	pass
 	
 func process_gate_name_submitted() -> void:
 	var input = gate_name_line_edit.text.to_upper()
@@ -45,11 +51,8 @@ func on_gate_clicked(component_type: int, type_uid: int) -> void:
 	var type_def: ComponentTypeDefinition = ComponentController.get_type_definition(component_type, type_uid)
 	var component = ComponentFactory.create_component(type_def)
 	ComponentController.add_component(component)
-	# TODO: still utilise the move_gate_to_mouse
-	#	var node = create_node(component.id, type_def.input_count, type_def.output_count)
-	#	move_gate_to_mouse(node)
 
-func move_gate_to_mouse(node: GraphNode) -> void:
+func move_graph_node_to_mouse(node: GraphNode) -> void:
 	var node_size_halved = node.rect_size / 2.0
 	var location = get_local_mouse_position() - node_size_halved
 	node.offset = location
@@ -90,17 +93,13 @@ func on_graph_node_closed(node: GraphNode):
 	node.disconnect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	remove_child(node)
 
-func load_persisted_data() -> void:
-	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
-	TreeHelper.remove_persisted_nodes()
-	ComponentController.load(SAVE_FILE_PATH)
-
-func create_node_from_component(component: Component) -> void:
+func create_node_from_component(component: Component) -> CustomGraphNode:
 	var node: CustomGraphNode = GRAPH_NODE.instance()
 	node.intialise(component)
 	var hook_errors = node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	assert(hook_errors == OK, "Unable to hoook to event: on_graph_node_closed")
 	add_child(node)
+	return node
 
 func save_persisted_nodes() -> void:
 	ComponentController.save(SAVE_FILE_PATH)
