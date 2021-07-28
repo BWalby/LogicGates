@@ -11,3 +11,6 @@ func create_component(component_type_def: ComponentTypeDefinition, uid: int = 0,
 
 	
 	return Component.new(component_type_def, predicate, uid, identifier)
+
+func create_type_definition() -> ComponentTypeDefinition:
+	return null

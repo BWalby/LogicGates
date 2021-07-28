@@ -6,13 +6,12 @@ const MIN_GATE_BUTTON_WIDTH := 50
 
 signal gate_clicked (name, input_count, output_count)
 
-func add_gate(name: String) -> void:
-	var button = create_gate_button(name)
-	print("adding")
+func add_definiton_button(uid: int, name: String) -> void:
+	var button = create_definition_button(name)
 	$".".add_child(button)
-	print("added")
+	print("%s added", name)
 	
-func create_gate_button(name) -> Button:
+func create_definition_button(name) -> Button:
 	# TODO: change to be reactive
 	var gate_button = Button.new()
 	gate_button.text = name

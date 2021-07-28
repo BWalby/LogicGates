@@ -28,9 +28,10 @@ func load_persisted_data() -> void:
 	ComponentController.load()
 
 func _on_type_definition_added(type_definition: ComponentTypeDefinition) -> void:
-	pass
+	$Toolbox.add_definiton_button(type_definition.uid, type_definition.name)
 
 func _on_type_definition_removed(type_definition: ComponentTypeDefinition) -> void:
+	# TODO: Remove associated definition button
 	pass
 	
 func _on_component_added(component: Component) -> void:
@@ -38,13 +39,15 @@ func _on_component_added(component: Component) -> void:
 	move_graph_node_to_mouse(graph_node)
 	
 func _on_component_removed(component: Component) -> void:
+	# TODO: remove associated graph node
 	pass
 	
 func process_gate_name_submitted() -> void:
 	var input = gate_name_line_edit.text.to_upper()
 	gate_name_line_edit.text = ""
 	add_gate_button.disabled = true
-	$Toolbox.add_gate(input)
+	var definition = ComponentFactory.create_type_definition()
+	ComponentController.add_definition(definition)
 
 func on_gate_clicked(component_type: int, type_uid: int) -> void:
 	var type_def: ComponentTypeDefinition = ComponentController.get_type_definition(component_type, type_uid)
@@ -108,5 +111,5 @@ func _on_SaveButton_pressed():
 	ComponentController.save()
 
 func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
-#	self.right_disconnects 
+	#	self.right_disconnects 
 	self.disconnect_node(from, from_slot, to, to_slot)

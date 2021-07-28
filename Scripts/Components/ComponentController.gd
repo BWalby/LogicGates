@@ -5,26 +5,38 @@ var components: Dictionary = {}
 
 const components_file_path = "user://components.save"
 const type_definitions_file_path = "user://defs.save"
-const and_definition_name = "AND"
-const not_definition_name = "NOT"
+const and_definition_uid = 1
+const not_definition_uid = 2
+const default_type_uids = [and_definition_uid, not_definition_uid]
 const pass_through_definition_name = "PASS_THROUGH_"
 signal type_definition_added(type_definition)
 signal type_definition_removed(type_definition)
 signal component_added(component)
 signal component_removed(component)
 
-func _init():
+func reinitialise_default_definitions():
+	var definitions_to_remove = []
+	
+	for definition in type_definitions.values():
+		if !default_type_uids.has(definition.uid):
+			definitions_to_remove.append(definition)
+
+	for definition in definitions_to_remove:
+		remove_definition(definition)
+	
+	type_definitions.clear()
 	var and_type_def = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.AND, 
-		2, 1, and_definition_name, 1)
+		2, 1, "AND", and_definition_uid)
 	var not_type_def = ComponentTypeDefinition.new(Enums.ComponentType.GATE, Enums.GatePredicateType.NOT, 
-		1, 1, not_definition_name, 2)
-	add_definition(and_type_def)
-	add_definition(not_type_def)
+		1, 1, "NOT", not_definition_uid)
+	add_definition(and_type_def, false)
+	add_definition(not_type_def, false)
 	Uid.set_seed_value(2)
 
-func add_definition(definition: ComponentTypeDefinition) -> void:
+func add_definition(definition: ComponentTypeDefinition, notify: bool = true) -> void:
 	type_definitions[definition.uid] = definition
-	emit_signal("type_definition_added", definition)
+	if notify:
+		emit_signal("type_definition_added", definition)
 	
 func remove_definition(definition: ComponentTypeDefinition) -> void:
 	if type_definitions.erase(definition):
@@ -41,7 +53,8 @@ func remove_component(component: Component) -> void:
 func load() -> void:
 	var type_defs_dict = Persistence.load_dictionaries(type_definitions_file_path)
 	var components_dict = Persistence.load_dictionaries(components_file_path)
-	
+
+	reinitialise_default_definitions()
 	load_definitions(type_defs_dict)
 	load_components(components_dict)
 
@@ -53,6 +66,8 @@ func load_definitions(dictionaries: Array) -> void:
 		add_definition(definition)
 
 func load_components(dictionaries: Array) -> void:
+	components.clear()
+
 	var strategy = ComponentLoadStrategy.new()
 	for dictionary in dictionaries:
 		var component = load_component(strategy, dictionary)
@@ -108,6 +123,8 @@ func generate_type_definition_dictionaries() -> Array:
 	var strategy = ComponentTypeDefinitionSaveStrategy.new()
 	var dictionaries = []
 	for type_def in type_definitions.values():
+		if default_type_uids.has(type_def.uid):
+			continue 
 		dictionaries.append(strategy.generate_data_dict(type_def))
 	
 	return dictionaries
@@ -143,12 +160,10 @@ func get_type_definition_by_name(type_def_name: String) -> ComponentTypeDefiniti
 	return null
 
 func get_and_type_definition_uid() -> int:
-	var definition = get_type_definition_by_name(and_definition_name)
-	return definition.uid
+	return and_definition_uid
 
 func get_not_type_definition_uid() -> int:
-	var definition = get_type_definition_by_name(not_definition_name)
-	return definition.uid
+	return not_definition_uid
 
 func get_pass_through_definition_uid(size: int) -> int:
 	var name = pass_through_definition_name + str(size)
