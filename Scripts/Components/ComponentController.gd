@@ -2,7 +2,8 @@ extends Node
 
 var type_definitions: Dictionary = {}
 var components: Dictionary = {}
-var load_strategy: LoadStrategy = LoadStrategy.new()
+var load_strategy = LoadStrategy.new()
+var save_strategy = SaveStrategy.new()
 const and_definition_name = "AND"
 const not_definition_name = "NOT"
 const pass_through_definition_name = "PASS_THROUGH_"
@@ -52,13 +53,13 @@ func load_components(dictionaries: Array) -> void:
 		var component = load_component(dictionary)
 		add_component(component)
 
-	for component in self.components:
+	for component in self.components.values():
 		resolve_input_steps(component)
 	
 func resolve_input_steps(component: Component):
 	var input_steps = []
 	for uid in component.input_uids:
-		var child_component = self.components.get(uid)
+		var child_component = self.components[uid]
 		assert(child_component != null, "could not retrieve component from uid")
 		input_steps.append(child_component)
 	
@@ -108,8 +109,8 @@ func save(file_path: String) -> void:
 
 func generate_component_dictionaries() -> Array:
 	var dictionaries = []
-	for component in self.components:
-		dictionaries.append(SaveStrategy.generate_data_dict(component))
+	for component in self.components.values():
+		dictionaries.append(save_strategy.generate_dict(component))
 
 	return dictionaries
 
