@@ -64,11 +64,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Persistence/CustomGraphNodeLoadStrategy.gd"
 }, {
-"base": "Reference",
-"class": "DataKeys",
-"language": "GDScript",
-"path": "res://Scripts/Persistence/DataKeys.gd"
-}, {
 "base": "Object",
 "class": "Enums",
 "language": "GDScript",
@@ -146,7 +141,6 @@ _global_script_class_icons={
 "ComponentTypeDefinitionSaveStrategy": "",
 "CustomGraphNode": "",
 "CustomGraphNodeLoadStrategy": "",
-"DataKeys": "",
 "Enums": "",
 "Gate": "",
 "GraphBuilder": "",
@@ -174,6 +168,7 @@ Uid="*res://Scripts/PrimitiveTypeUtilities/Uid.gd"
 TreeHelper="*res://Scripts/TreeUtilities/TreeHelper.gd"
 GatePredicateHelper="*res://Scripts/Gates/GatePredicateHelper.gd"
 ComponentFactory="*res://Scripts/Components/ComponentFactory.gd"
+DataKeys="*res://Scripts/Persistence/DataKeys.gd"
 ComponentController="*res://Scripts/Components/ComponentController.gd"
 
 [editor_plugins]

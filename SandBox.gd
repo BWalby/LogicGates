@@ -2,7 +2,6 @@ extends GraphEdit
 
 const GRAPH_NODE = preload("res://Scenes/CustomGraphNode.tscn")
 const GRAPH_NODE_CLOSE_EVENT = "graph_node_close"
-const SAVE_FILE_PATH = "user://data.save"
 
 onready var add_gate_button = $AddDefinitionHBox/AddDefinitionButton
 onready var gate_name_line_edit = $AddDefinitionHBox/DefinitionNameLineEdit
@@ -26,7 +25,7 @@ func hook_controller() -> void:
 func load_persisted_data() -> void:
 	# remove each node in node group: n.queue_free(), so when populated via load, we don't double up
 	TreeHelper.remove_persisted_nodes()
-	ComponentController.load(SAVE_FILE_PATH)
+	ComponentController.load()
 
 func _on_type_definition_added(type_definition: ComponentTypeDefinition) -> void:
 	pass
@@ -101,15 +100,12 @@ func create_node_from_component(component: Component) -> CustomGraphNode:
 	add_child(node)
 	return node
 
-func save_persisted_nodes() -> void:
-	ComponentController.save(SAVE_FILE_PATH)
-
 func _on_GraphEdit_tree_exiting():
 	# child nodes seem to already be leaving the tree in this event
 	print("_on_GraphEdit_tree_exiting")
 
 func _on_SaveButton_pressed():
-	save_persisted_nodes()
+	ComponentController.save()
 
 func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):
 #	self.right_disconnects 

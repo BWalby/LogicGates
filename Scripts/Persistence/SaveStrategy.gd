@@ -1,5 +1,5 @@
 extends Object
-class_name SaveStrategy
+class_name ComponentSaveStrategy
 
 static func generate_dict(component: Component) -> Dictionary:
   var dict = {}

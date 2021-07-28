@@ -2,8 +2,9 @@ extends Node
 
 var type_definitions: Dictionary = {}
 var components: Dictionary = {}
-var load_strategy = LoadStrategy.new()
-var save_strategy = SaveStrategy.new()
+
+const components_file_path = "user://components.save"
+const type_definitions_file_path = "user://defs.save"
 const and_definition_name = "AND"
 const not_definition_name = "NOT"
 const pass_through_definition_name = "PASS_THROUGH_"
@@ -37,25 +38,37 @@ func remove_component(component: Component) -> void:
 	if components.erase(component.uid):
 		emit_signal("component_removed", component)
 
-func load(file_path: String) -> void:
-	var dictionaries = Persistence.load_dictionaries(file_path)
-	# todo: split dictionaries to defs and components
-	load_definitions(dictionaries)
-	load_components(dictionaries)
+func load() -> void:
+	var type_defs_dict = Persistence.load_dictionaries(type_definitions_file_path)
+	var components_dict = Persistence.load_dictionaries(components_file_path)
+	
+	load_definitions(type_defs_dict)
+	load_components(components_dict)
 
 func load_definitions(dictionaries: Array) -> void:
 	for dictionary in dictionaries:
 		var definition = load_definition(dictionary)
 		add_definition(definition)
 
+func load_definition(strategy: ComponentTypeDefinitionLoadStrategy, dict: Dictionary) -> ComponentTypeDefinition:
+	validate_definition_dictionary(dict)
+	return strategy.load(dict)		
+
 func load_components(dictionaries: Array) -> void:
+	var strategy = LoadStrategy.new()
 	for dictionary in dictionaries:
-		var component = load_component(dictionary)
+		var component = load_component(strategy, dictionary)
 		add_component(component)
 
 	for component in self.components.values():
 		resolve_input_steps(component)
-	
+
+func load_component(strategy: LoadStrategy, dict: Dictionary) -> Component:
+	validate_component_dictionary(dict)
+	var type_def_uid = strategy.load_type_def_uid(dict)
+	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
+	return strategy.load(dict, type_def)		
+		
 func resolve_input_steps(component: Component):
 	var input_steps = []
 	for uid in component.input_uids:
@@ -71,17 +84,6 @@ func validate_definition_dictionary(dict: Dictionary) -> void:
 	for key in keys_to_validate:
 		assert(dict.has(key), "ComponentTypeDefinition key missing: '%s'" % key)
 
-func load_definition(dict: Dictionary) -> ComponentTypeDefinition:
-	validate_definition_dictionary(dict)
-	var type = dict[ComponentTypeDefinitionDataKeys.component_type_key]
-	var type_uid = dict[ComponentTypeDefinitionDataKeys.uid_key]
-	var name = dict[ComponentTypeDefinitionDataKeys.component_name_key]
-	var predicate_type = dict[ComponentTypeDefinitionDataKeys.component_predicate_type_key]
-	var input_count = dict[ComponentTypeDefinitionDataKeys.component_input_count_key]
-	var output_count = dict[ComponentTypeDefinitionDataKeys.component_output_count_key]
-	
-	return ComponentTypeDefinition.new(type, predicate_type, input_count, output_count, name, type_uid)
-
 func validate_component_dictionary(dict: Dictionary) -> void:
 	# todo: add keys to validate
 	var keys_to_validate = [
@@ -96,21 +98,22 @@ func validate_component_dictionary(dict: Dictionary) -> void:
 	for key in keys_to_validate:
 		assert(dict.has(key), "Component key missing {_}".format(key))
 
-func load_component(dict: Dictionary) -> Component:
-	validate_component_dictionary(dict)
-	var type_def_uid = load_strategy.load_type_def_uid(dict)
-	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
-	return load_strategy.load(dict, type_def)
-
-func save(file_path: String) -> void:
-	var dictionaries = generate_component_dictionaries()
+func save() -> void:
+	var type_defs_dict = generate_type_definition_dictionaries()
+	var components_dict = generate_component_dictionaries()	
 	# TODO: use real versioning
-	Persistence.save_dictionaries(file_path, "1.0.0", dictionaries)
+	var version = "1.0.0"
+	Persistence.save_dictionaries(type_definitions_file_path, version, type_defs_dict)
+	Persistence.save_dictionaries(components_file_path, version, components_dict)
+
+func generate_type_definition_dictionaries() -> Array:
+	var strategy = ComponentTypeDefinitionSaveStrategy.new()
 
 func generate_component_dictionaries() -> Array:
+	var strategy = ComponentSaveStrategy.new()
 	var dictionaries = []
 	for component in self.components.values():
-		dictionaries.append(save_strategy.generate_dict(component))
+		dictionaries.append(strategy.generate_dict(component))
 
 	return dictionaries
 
@@ -127,7 +130,6 @@ func get_type_definition(component_type: int, type_def_uid: int) -> ComponentTyp
 		_:
 			assert(true, "Unsupported type definition UID")
 			return null
-
 
 func get_type_definition_by_name(type_def_name: String) -> ComponentTypeDefinition:
 	for key in type_definitions:
