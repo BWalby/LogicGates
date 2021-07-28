@@ -1,5 +1,5 @@
 extends Object
-class_name LoadStrategy
+class_name ComponentLoadStrategy
 
 func load_type_def_uid(data: Dictionary) -> int:
 	return data[DataKeys.type_definition_uid_key]

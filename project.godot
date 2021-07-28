@@ -30,6 +30,16 @@ _global_script_classes=[ {
 "path": "res://Scripts/Components/Component.gd"
 }, {
 "base": "Object",
+"class": "ComponentLoadStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/ComponentLoadStrategy.gd"
+}, {
+"base": "Object",
+"class": "ComponentSaveStrategy",
+"language": "GDScript",
+"path": "res://Scripts/Persistence/ComponentSaveStrategy.gd"
+}, {
+"base": "Object",
 "class": "ComponentSorter",
 "language": "GDScript",
 "path": "res://Scripts/Runner/ComponentSorter.gd"
@@ -84,11 +94,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Components/InputComponent.gd"
 }, {
-"base": "Object",
-"class": "LoadStrategy",
-"language": "GDScript",
-"path": "res://Scripts/Persistence/LoadStrategy.gd"
-}, {
 "base": "Reference",
 "class": "MockHelper",
 "language": "GDScript",
@@ -120,11 +125,6 @@ _global_script_classes=[ {
 "path": "res://Scripts/Runner/Runner.gd"
 }, {
 "base": "Object",
-"class": "SaveStrategy",
-"language": "GDScript",
-"path": "res://Scripts/Persistence/SaveStrategy.gd"
-}, {
-"base": "Object",
 "class": "TestSetupHelper",
 "language": "GDScript",
 "path": "res://Tests/TestSetupHelper.gd"
@@ -134,6 +134,8 @@ _global_script_class_icons={
 "CharMapper": "",
 "CombinatorComponent": "",
 "Component": "",
+"ComponentLoadStrategy": "",
+"ComponentSaveStrategy": "",
 "ComponentSorter": "",
 "ComponentTypeDefinition": "",
 "ComponentTypeDefinitionDataKeys": "",
@@ -145,14 +147,12 @@ _global_script_class_icons={
 "Gate": "",
 "GraphBuilder": "",
 "InputComponent": "",
-"LoadStrategy": "",
 "MockHelper": "",
 "NotGate": "",
 "OrGate": "",
 "PassThroughGate": "",
 "Persistence": "",
 "Runner": "",
-"SaveStrategy": "",
 "TestSetupHelper": ""
 }
 
