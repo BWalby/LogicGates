@@ -55,7 +55,7 @@ func load_definition(strategy: ComponentTypeDefinitionLoadStrategy, dict: Dictio
 	return strategy.load(dict)		
 
 func load_components(dictionaries: Array) -> void:
-	var strategy = LoadStrategy.new()
+	var strategy = ComponentLoadStrategy.new()
 	for dictionary in dictionaries:
 		var component = load_component(strategy, dictionary)
 		add_component(component)
@@ -63,7 +63,7 @@ func load_components(dictionaries: Array) -> void:
 	for component in self.components.values():
 		resolve_input_steps(component)
 
-func load_component(strategy: LoadStrategy, dict: Dictionary) -> Component:
+func load_component(strategy: ComponentLoadStrategy, dict: Dictionary) -> Component:
 	validate_component_dictionary(dict)
 	var type_def_uid = strategy.load_type_def_uid(dict)
 	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
