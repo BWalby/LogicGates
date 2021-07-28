@@ -69,7 +69,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Nodes/CustomGraphNode.gd"
 }, {
-"base": "LoadStrategy",
+"base": "ComponentLoadStrategy",
 "class": "CustomGraphNodeLoadStrategy",
 "language": "GDScript",
 "path": "res://Scripts/Persistence/CustomGraphNodeLoadStrategy.gd"

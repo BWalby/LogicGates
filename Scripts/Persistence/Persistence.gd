@@ -41,11 +41,13 @@ static func load_dictionaries(file_path: String) -> Array:
 		var line = data_file.get_line()
 		var data = parse_json(line)
 
-		if index == 0:
+		if index == version_line_index:
 				version = parse_json(line)
 		elif typeof(data) == TYPE_DICTIONARY:
 			loaded_data.append(data)
 		
 		index = index + 1
+
+	print("loaded: %s, version: (%s)" % [file_path, version])
 		
 	return loaded_data

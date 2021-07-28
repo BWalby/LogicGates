@@ -46,13 +46,11 @@ func load() -> void:
 	load_components(components_dict)
 
 func load_definitions(dictionaries: Array) -> void:
+	var strategy = ComponentTypeDefinitionLoadStrategy.new()
 	for dictionary in dictionaries:
-		var definition = load_definition(dictionary)
+		validate_definition_dictionary(dictionary)
+		var definition = strategy.load(dictionary)		
 		add_definition(definition)
-
-func load_definition(strategy: ComponentTypeDefinitionLoadStrategy, dict: Dictionary) -> ComponentTypeDefinition:
-	validate_definition_dictionary(dict)
-	return strategy.load(dict)		
 
 func load_components(dictionaries: Array) -> void:
 	var strategy = ComponentLoadStrategy.new()
@@ -108,11 +106,16 @@ func save() -> void:
 
 func generate_type_definition_dictionaries() -> Array:
 	var strategy = ComponentTypeDefinitionSaveStrategy.new()
+	var dictionaries = []
+	for type_def in type_definitions.values():
+		dictionaries.append(strategy.generate_data_dict(type_def))
+	
+	return dictionaries
 
 func generate_component_dictionaries() -> Array:
 	var strategy = ComponentSaveStrategy.new()
 	var dictionaries = []
-	for component in self.components.values():
+	for component in components.values():
 		dictionaries.append(strategy.generate_dict(component))
 
 	return dictionaries
