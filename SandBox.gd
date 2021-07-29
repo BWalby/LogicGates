@@ -110,7 +110,10 @@ func _on_GraphEdit_tree_exiting():
 	# child nodes seem to already be leaving the tree in this event
 	print("_on_GraphEdit_tree_exiting")
 
-func _on_SaveButton_pressed():
+func _on_LoadButton_button_up():
+	load_persisted_data()
+
+func _on_SaveButton_button_up():
 	ComponentController.save()
 
 func _on_GraphEdit_disconnection_request(from, from_slot, to, to_slot):

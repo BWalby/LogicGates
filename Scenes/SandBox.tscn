@@ -67,6 +67,35 @@ rect_min_size = Vector2( 50, 0 )
 disabled = true
 text = "Add"
 
+[node name="FileOpsHBox" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_left = 230.0
+margin_top = 53.0
+margin_right = -15.0
+margin_bottom = 73.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadButton" type="Button" parent="FileOpsHBox"]
+margin_right = 42.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 41, 10 )
+text = "Load"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveButton" type="Button" parent="FileOpsHBox"]
+margin_left = 46.0
+margin_right = 87.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 41, 10 )
+text = "Save"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="GraphNode" parent="." instance=ExtResource( 1 )]
 margin_left = 10.0
 margin_top = 250.0
@@ -75,13 +104,6 @@ margin_bottom = 363.0
 mouse_filter = 1
 title = "Inputs"
 offset = Vector2( 10, 250 )
-
-[node name="SaveButton" type="Button" parent="."]
-margin_left = 341.989
-margin_top = 70.795
-margin_right = 353.989
-margin_bottom = 90.795
-text = "save"
 [connection signal="connection_request" from="." to="." method="_on_GraphEdit_connection_request"]
 [connection signal="disconnection_request" from="." to="." method="_on_GraphEdit_disconnection_request"]
 [connection signal="tree_exiting" from="." to="." method="_on_GraphEdit_tree_exiting"]
@@ -90,4 +112,5 @@ text = "save"
 [connection signal="text_changed" from="AddDefinitionHBox/DefinitionNameLineEdit" to="." method="_on_DefinitionNameLineEdit_text_changed"]
 [connection signal="text_entered" from="AddDefinitionHBox/DefinitionNameLineEdit" to="." method="_on_DefinitionNameLineEdit_text_entered"]
 [connection signal="button_up" from="AddDefinitionHBox/AddDefinitionButton" to="." method="_on_AddDefinitionButton_button_up"]
-[connection signal="pressed" from="SaveButton" to="." method="_on_SaveButton_pressed"]
+[connection signal="button_up" from="FileOpsHBox/LoadButton" to="." method="_on_LoadButton_button_up"]
+[connection signal="button_up" from="FileOpsHBox/SaveButton" to="." method="_on_SaveButton_button_up"]
