@@ -7,6 +7,7 @@ const components_file_path = "user://components.save"
 const type_definitions_file_path = "user://defs.save"
 const and_definition_uid = 1
 const not_definition_uid = 2
+const uid_default_seed = 3
 const default_type_uids = [and_definition_uid, not_definition_uid]
 const pass_through_definition_name = "PASS_THROUGH_"
 signal type_definition_added(type_definition)
@@ -31,7 +32,7 @@ func reinitialise_default_definitions():
 		1, 1, "NOT", not_definition_uid)
 	add_definition(and_type_def, false)
 	add_definition(not_type_def, false)
-	Uid.set_seed_value(2)
+	Uid.set_seed_value(uid_default_seed)
 
 func add_definition(definition: ComponentTypeDefinition, notify: bool = true) -> void:
 	type_definitions[definition.uid] = definition
@@ -51,12 +52,17 @@ func remove_component(component: Component) -> void:
 		emit_signal("component_removed", component)
 
 func load() -> void:
-	var type_defs_dict = Persistence.load_dictionaries(type_definitions_file_path)
-	var components_dict = Persistence.load_dictionaries(components_file_path)
+	var type_defs_saved_dict = Persistence.load_dictionaries(type_definitions_file_path)
+	var components_saved_dict = Persistence.load_dictionaries(components_file_path)
 
 	reinitialise_default_definitions()
-	load_definitions(type_defs_dict)
-	load_components(components_dict)
+	load_definitions(type_defs_saved_dict)
+	load_components(components_saved_dict)
+	update_uid_seed_value()
+
+func update_uid_seed_value() -> void:
+	var max_uid: int = Uid.get_max_uid([type_definitions.values(), components.values()], uid_default_seed)
+	Uid.set_seed_value(max_uid + 1)
 
 func load_definitions(dictionaries: Array) -> void:
 	var strategy = ComponentTypeDefinitionLoadStrategy.new()
@@ -81,7 +87,8 @@ func load_component(strategy: ComponentLoadStrategy, dict: Dictionary) -> Compon
 	var type_def_uid = strategy.load_type_def_uid(dict)
 	var type_def = get_type_definition(Enums.ComponentType.GATE, type_def_uid)
 	return strategy.load(dict, type_def)		
-		
+
+# TODO: refactor to own input resolver class
 func resolve_input_steps(component: Component):
 	var input_steps = []
 	for uid in component.input_uids:

@@ -40,8 +40,9 @@ func _on_component_added(component: Component) -> void:
 		move_graph_node_to_mouse(graph_node)
 	
 func _on_component_removed(component: Component) -> void:
-	# TODO: remove associated graph node
-	pass
+	var node = TreeHelper.get_custom_graph_node(component.uid)
+	node.disconnect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
+	remove_child(node)
 	
 func process_gate_name_submitted() -> void:
 	var input = gate_name_line_edit.text.to_upper()
@@ -92,9 +93,8 @@ func _on_GraphEdit_connection_request(from, from_slot, to, to_slot) -> void:
 		var hook_errors = connect_node(from, from_slot, to, to_slot)
 		assert(hook_errors == OK)
 
-func on_graph_node_closed(node: GraphNode):
-	node.disconnect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
-	remove_child(node)
+func on_graph_node_closed(node: CustomGraphNode):
+	ComponentController.remove_component(node.component)
 
 func create_node_from_component(component: Component) -> CustomGraphNode:
 	var node: CustomGraphNode = GRAPH_NODE.instance()
@@ -102,6 +102,8 @@ func create_node_from_component(component: Component) -> CustomGraphNode:
 	var hook_errors = node.connect(GRAPH_NODE_CLOSE_EVENT, self, "on_graph_node_closed")
 	assert(hook_errors == OK, "Unable to hoook to event: on_graph_node_closed")
 	add_child(node)
+	TreeHelper.add_to_persisted_group(node)
+	TreeHelper.add_to_ic_group(node)
 	return node
 
 func _on_GraphEdit_tree_exiting():

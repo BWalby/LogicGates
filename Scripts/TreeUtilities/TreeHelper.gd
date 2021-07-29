@@ -4,6 +4,13 @@ const persisted_tag := "Persisted"
 const ic_definition_tag := "ICDefinition"
 const ic_tag := "IC"
 
+func get_custom_graph_node(uid: int) -> CustomGraphNode:
+	var graph_nodes: Array = get_tree().get_nodes_in_group(ic_tag)
+	for graph_node in graph_nodes:
+		if graph_node.component.uid == uid:
+			return graph_node
+
+	return null
 
 func remove_nodes_by_group_tag(group_tag: String) -> void:
 	var nodes = get_tree().get_nodes_in_group(group_tag)
@@ -13,9 +20,6 @@ func remove_nodes_by_group_tag(group_tag: String) -> void:
 
 func remove_persisted_nodes() -> void:
 	remove_nodes_by_group_tag(persisted_tag)
-
-func get_nodes_in_group(group_tag: String) -> Array:
-	return get_tree().get_nodes_in_group(group_tag)
 
 func list_nodes(root_node: Node = null) -> void:
 	root_node = get_tree().current_scene if root_node == null else root_node
@@ -30,3 +34,9 @@ func list_nodes(root_node: Node = null) -> void:
 		print()
 		
 		list_nodes(child)
+
+func add_to_persisted_group(node: Node) -> void:
+	node.add_to_group(persisted_tag)
+
+func add_to_ic_group(node: Node) -> void:
+	node.add_to_group(ic_tag)

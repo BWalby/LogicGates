@@ -48,5 +48,4 @@ func on_component_position_changed(position: Vector2) -> void:
 	#TODO: propagate this to the Sandbox.gd
 
 func on_GraphNode_offset_changed():
-	# todo: set position directly or call the setget stated method?
 	self.component.position = self.offset
