@@ -14,6 +14,10 @@ func load(data: Dictionary, type_def: ComponentTypeDefinition) -> Component:
 		return null
 		
 	var component = ComponentFactory.create_component(type_def, uid, identifier)
+	
+	var x = data[DataKeys.pos_x_key]
+	var y = data[DataKeys.pos_y_key]
+	component.position = Vector2(x, y)
 	component.input_uids = data[DataKeys.input_uids_key]
 
 	return component

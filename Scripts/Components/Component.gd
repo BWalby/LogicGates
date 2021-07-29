@@ -13,7 +13,7 @@ var input_steps := []
 var process_step: FuncRef
 var result := []
 var type_definition: ComponentTypeDefinition
-var position: Vector2 = Vector2.ZERO setget set_position
+var position: Vector2 = Vector2.INF setget set_position
 
 signal position_changed(position)
 

@@ -36,7 +36,8 @@ func _on_type_definition_removed(type_definition: ComponentTypeDefinition) -> vo
 	
 func _on_component_added(component: Component) -> void:
 	var graph_node = create_node_from_component(component)
-	move_graph_node_to_mouse(graph_node)
+	if component.position == Vector2.INF:
+		move_graph_node_to_mouse(graph_node)
 	
 func _on_component_removed(component: Component) -> void:
 	# TODO: remove associated graph node
